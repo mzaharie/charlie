@@ -47,6 +47,10 @@ class ProductAdminController extends Controller {
             $form->bind($request);
         }
         if ($form->isValid()) {
+//            $product_service = $this->get("bookshop_bookshop.product.service");
+//            $new_product = $product_service->insert($product);
+//            var_dump($new_product);
+//            die();
             $product->setActive(1);
 
             $image = new Image();

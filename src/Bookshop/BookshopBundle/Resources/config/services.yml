@@ -12,3 +12,5 @@ services:
             arguments: [%fos_user.model.user.class%]
             tags:
                 - { name: form.type, alias: bookshop_user_profile }
+    bookshop_bookshop.product.service:
+      class: Bookshop\BookshopBundle\Entity\ProductService

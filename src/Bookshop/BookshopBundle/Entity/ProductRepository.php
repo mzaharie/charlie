@@ -4,6 +4,7 @@ namespace Bookshop\BookshopBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 
+
 /**
  * ProductRepository
  *
