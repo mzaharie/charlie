@@ -18,10 +18,18 @@
                         </div>
                         <div id="checkout-step-review" class="step a-item">
                             <div class="order-review" id="checkout-review-load">
-                                
+                            <ul class="messages">
+                                <li class="success-msg">
+                                    <ul>
+                                        <div>
                             Thank you for your purchase!</br>
                             Your order number is {{"%1$08d"|format(order.id)}}</br>
                             You will receive an order information email with details of your order and a link to track it's progress.
+                                        </div>
+                                    </ul>
+                                </li>
+                            </ul>    
+                            
                             </div>
 
                             <div class="buttons-set" id="payment-buttons-container">
