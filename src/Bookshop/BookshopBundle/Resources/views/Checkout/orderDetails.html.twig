@@ -110,7 +110,10 @@
                             </div>
 
                             <div class="buttons-set" id="payment-buttons-container">
-                                <a href="{{path('cancel')}}"><button type="button" class="button"><span><span>Cancel</span></span></button></a>
+                                <form action="{{path('cancel_user')}}" method="POST">
+                                    <input name='id' value="{{order.id}}" type='hidden'/>
+                                    <button type="submit" class="button"><span><span>Cancel</span></span></button>
+                                </form>
                             </div>
                         </div>
                     </li>

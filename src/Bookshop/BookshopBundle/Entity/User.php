@@ -64,13 +64,15 @@ class User extends BaseUser {
      *     pattern="/^\d+$/",
      *     htmlPattern="*",
      *     match=true,
-     *     message="user.mobile.regex1"
+     *     message="user.mobile.regex1",
+     *     groups={"Registration", "Profile"}
      * )
      * @Assert\Regex(
      *     pattern="/^\d{10,12}$/",
      *     htmlPattern="*",
      *     match=true,
-     *     message="user.mobile.regex2"
+     *     message="user.mobile.regex2",
+     *     groups={"Registration", "Profile"}
      * )
      * 
      */

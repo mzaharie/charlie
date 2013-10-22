@@ -26,6 +26,11 @@ class CheckoutController extends Controller {
         if (sizeof($cartitems) == 0) {
             return $this->render("BookshopBookshopBundle:Error:Empty.html.twig");
         } else {
+            if (!$this->getUser()) {
+                $this->getRequest()->getSession()->getFlashBag()->add('error', "Please login before checkout!");
+                $url = $this->getRequest()->headers->get("referer");
+                return new RedirectResponse($url);
+            }
             $step = $this->dispatchToStep();
             return $this->redirect($this->generateUrl($step));
         }
@@ -234,6 +239,65 @@ class CheckoutController extends Controller {
         return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
     }
     
+    /**
+     * user-ul poate renunta(face cancel) doar daca order-ul este in starile 1 si 2, si ii apartine
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function userCancelAction(Request $request)
+    {
+        if (!$this->getUser()) {
+            $this->getRequest()->getSession()->getFlashBag()->add('error', "Please login before checkout!");
+            $url = $this->getRequest()->headers->get("referer");
+            return new RedirectResponse($url);
+        }
+        $id = null;
+        if ($request->getMethod() == 'POST') {
+            $id = $request->request->get('id');
+        }
+        
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        $order = new BookshopOrder();
+        $order = $em->getRepository('BookshopBookshopBundle:BookshopOrder')->find($id);
+        if(!$order){
+            $this->getRequest()->getSession()->getFlashBag()->add('error', "Order not found!");
+            return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+        }
+        $ok = true;
+        if($order->getUser()->getId() != $user->getId()){
+            $ok = false;
+            $this->getRequest()->getSession()->getFlashBag()->add('error', "This is not your order!");
+            return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+        }
+        elseif(!$order->getState()){
+            $ok = false;
+            $this->getRequest()->getSession()->getFlashBag()->add('error', "The order is bad!");
+            return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+        }
+        elseif(in_array($order->getState()->getId(), array(3,5) )){
+            $ok = false;
+            $this->getRequest()->getSession()->getFlashBag()->add('error', "The order cannot be canceled!");
+            return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+        }
+        elseif($order->getState()->getId() == 4){
+            $ok = false;
+            $this->getRequest()->getSession()->getFlashBag()->add('error', "The order was already canceled!");
+            return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+        }
+            
+        $state = $em->getRepository('BookshopBookshopBundle:State')->find(4);  //failed state
+        if($ok == true){
+            $order->setState($state);
+            $em->persist($order);
+            $em->flush($order);
+            $this->getRequest()->getSession()->getFlashBag()->add('success', "The order was canceled!");
+        }
+        return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+    }
+    
     public function placeOrderAction()
     {
         if (!$this->getUser()) {
@@ -261,7 +325,7 @@ class CheckoutController extends Controller {
             ->setSubject('Contact enquiry from symblog')
             ->setFrom('office@bookshop.com')
             ->setTo($user->getEmail())
-            ->setBody($this->renderView('BookshopBookshopBundle:Checkout:orderEmail.html.twig', array('order' => $order)));
+            ->setBody($this->renderView('BookshopBookshopBundle:Checkout:orderEmail.html.twig', array('order' => $order)), 'text/html');
         $this->get('mailer')->send($message);
         
         return $this->render('BookshopBookshopBundle:Checkout:success.html.twig', array('order' => $order));
@@ -278,7 +342,15 @@ class CheckoutController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
         $order = $em->getRepository('BookshopBookshopBundle:BookshopOrder')->find($id);
-        
+        if(!$order){
+            $this->getRequest()->getSession()->getFlashBag()->add('error', "Order not found!");
+            return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+        }
+        elseif($order->getUser()->getId() != $user->getId()){
+            $ok = false;
+            $this->getRequest()->getSession()->getFlashBag()->add('error', "This is not your order!");
+            return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+        }
         return $this->render('BookshopBookshopBundle:Checkout:orderDetails.html.twig', array('order' => $order));
     }
 

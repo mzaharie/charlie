@@ -94,6 +94,11 @@ order_details:
   requirements:
     _method: GET
     id: \d+
+cancel_user:
+  pattern: checkout/usercancel
+  defaults: { _controller: BookshopBookshopBundle:Checkout:userCancel}
+  requirements:
+    _method: POST
 
 profile:
   pattern: profile/min
