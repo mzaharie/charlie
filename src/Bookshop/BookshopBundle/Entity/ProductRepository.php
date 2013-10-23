@@ -50,6 +50,37 @@ class ProductRepository extends EntityRepository {
                         ->getResult();
     }
     
+    public function isOnStock($id, $quantity)
+    {
+       $qb = $this->createQueryBuilder('s')
+                ->select('s.stock')->where('s.id = :id AND s.active = 1')
+                ->setParameter('id', $id);
+       $result=$qb->getQuery()->getSingleResult();
+
+       if($result['stock'] >= $quantity)
+           return true;
+       else
+           return false;
+    }
+    
+    public function addStock($id, $quantity)
+    {
+        $qb = $this->createQueryBuilder('s')
+                ->select('s.stock')->where('s.id = :id AND s.active = 1')
+                ->setParameter('id', $id);
+        $result = $qb->getQuery()->getSingleResult();
+        $prevStock = $result['stock'];
+        
+        if($prevStock+$quantity >= 0){
+            $qb = $this->createQueryBuilder('s')
+                    ->update()->set('s.stock', $prevStock + $quantity)
+                    ->where('s.id= :id')
+                    ->setParameter('id', $id);
+            $qb->getQuery()->execute();
+        }
+    }
+
+
     public function getNrAllProducts($filter)
     {
         $em = $this->getEntityManager();

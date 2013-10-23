@@ -117,7 +117,7 @@ class BookshopOrder
      * @param string $cart
      * @return BookshopOrder
      */
-    public function setCart($cart)
+    public function setCart(\Bookshop\BookshopBundle\Entity\Cart $cart = null)
     {
         $this->cart = $cart;
     

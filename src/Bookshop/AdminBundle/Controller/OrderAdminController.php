@@ -31,11 +31,15 @@ class OrderAdminController extends Controller{
     public function setStateAction($id,$stateId){
         $em = $this->getDoctrine()->getManager();
         $order = $em->getRepository("BookshopBookshopBundle:BookshopOrder")->find($id);
+        $prevState = $order->getState();
         $state = $em->getRepository("BookshopBookshopBundle:State")->find($stateId);
         $order->setState($state);
         if($state->getId() == 4){
-            //$em->getRepository("BookshopBookshopBundle:BookshopOrder")->cancelCart(); // pun produsele din nou pe stoc dar las cartul(si cart_items) inactiv. Astfel raman informatiile despre comanda
-            //to do
+            $em->getRepository('BookshopBookshopBundle:Cart')->putOnStock($order->getCart()->getId());
+        }
+        if($state->getId() == 5){
+            $ok = $em->getRepository('BookshopBookshopBundle:Cart')->takeFromStock($order->getCart()->getId());
+            if(!$ok) $order->setState($prevState);
         }
         
         $em->persist($order);
@@ -49,13 +53,10 @@ class OrderAdminController extends Controller{
         $em = $this->getDoctrine()->getManager();
         
         $order = $em->getRepository("BookshopBookshopBundle:BookshopOrder")->find($id);
-        $cartitems = null;
-        if($order->getCart()){
-        $cartitems = $em->getRepository('BookshopBookshopBundle:CartItems')->getItems($order->getCart()->getId());
-        }
+        
         $states = $em->getRepository("BookshopBookshopBundle:State")->findAll();
         
-        return $this->render('BookshopAdminBundle:OrderAdmin:view.html.twig', array('order' => $order, 'cartitems' =>$cartitems, 'states' => $states));
+        return $this->render('BookshopAdminBundle:OrderAdmin:view.html.twig', array('order' => $order, 'states' => $states));
     }
     
 }

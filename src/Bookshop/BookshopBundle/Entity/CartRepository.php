@@ -43,5 +43,34 @@ class CartRepository extends EntityRepository {
         return $qb->getQuery()
                         ->getResult();
     }
-
+    
+    public function putOnStock($id)
+    {
+        $em = $this->getEntityManager();
+        $cart = $em->getRepository('BookshopBookshopBundle:Cart')->find($id);
+        
+        foreach ($cart->getCartitems() as $item){
+            $product = $item->getProductId();
+            $em->getRepository('BookshopBookshopBundle:Product')->addStock($product->getId(), $item->getQuantity());
+        }
+    }
+    
+    public function takeFromStock($id)
+    {
+        $em = $this->getEntityManager();
+        $cart = $em->getRepository('BookshopBookshopBundle:Cart')->find($id);
+        
+        foreach ($cart->getCartitems() as $item){
+            $product = $item->getProductId();
+            $onStock = $em->getRepository('BookshopBookshopBundle:Product')->isOnStock($product->getId(), $item->getQuantity());
+            if(!$onStock) 
+                return false;
+        }
+        
+        foreach ($cart->getCartitems() as $item){
+            $product = $item->getProductId();
+            $em->getRepository('BookshopBookshopBundle:Product')->addStock($product->getId(), -$item->getQuantity());
+        }
+        return true;
+    }
 }

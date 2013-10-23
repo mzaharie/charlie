@@ -32,7 +32,7 @@
                                 <th class="table-header-repeat line-left minwidth-1"><a href>Price</a></th>
                                 <th class="table-header-repeat line-left minwidth-1"><a href>Subtotal</a></th>
                             </tr>
-                            {% for cartitem in  cartitems %}
+                            {% for cartitem in  order.cart.cartitems %}
                             <tr {% if loop.index is odd %}{% else %}class="alternate-row"{% endif %}>
                                 <td>{{cartitem.title}}</td>
                                 <td>{{cartitem.quantity}}</td>
