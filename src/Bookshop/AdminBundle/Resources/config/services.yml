@@ -5,3 +5,6 @@ services:
 #    bookshop_admin.example:
 #        class: %bookshop_admin.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+  product_service:
+      class:  'Bookshop\AdminBundle\Service\ProductService'
+      arguments: ['@doctrine']

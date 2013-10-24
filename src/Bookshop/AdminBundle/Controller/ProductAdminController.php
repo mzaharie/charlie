@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Bookshop\AdminBundle\Form\Type\ProductAddFormType;
 use Bookshop\BookshopBundle\Entity\Product;
-use Bookshop\BookshopBundle\Entity\Image;
 
 /**
  * Description of UserAdminController
@@ -42,29 +41,8 @@ class ProductAdminController extends Controller {
             $form->bind($request);
         }
         if ($form->isValid()) {
-            $product->setActive(1);
-
-            $image = new Image();
-            $image->setPath("bundles/bookshopbookshop/public/image/");
-            if ($product->getFile()) {
-                $filename = sha1(uniqid(mt_rand(), true));
-                $image->setFilename($filename.".".$product->getFile()->guessExtension());
-            } else {
-                $image->setFilename('defalut.jpg');
-            }
-            $em->persist($product);
-            $em->flush($product);
-
-            $image->setProductid($product->getId());
-
-            $em->persist($image);
-            $em->flush($image);
-            $product->setImage($image);
-
-            $product->upload();
-
-            $em->persist($product);
-            $em->flush();
+            $productService = $this->get('product_service');
+            $productService->persistNew($product);
 
             return $this->redirect($this->generateUrl("bookshop_admin_product_list"));
         }
@@ -85,34 +63,8 @@ class ProductAdminController extends Controller {
             $form->bind($request);
         }
         if ($form->isValid()) {
-            $product->setActive(1);
-
-            $image = $product->getImage();
-            if(!$image){
-                $image = new Image();
-                $image->setPath("bundles/bookshopbookshop/public/image/");
-            }
-            
-            if ($product->getFile()) {
-                $filename = sha1(uniqid(mt_rand(), true));
-                $image->setFilename($filename.".".$product->getFile()->guessExtension());
-            }
-            
-            $em->persist($product);
-            $em->flush($product);
-
-            $image->setProductid($product->getId());
-
-            $em->persist($image);
-            $em->flush($image);
-            $product->setImage($image);
-            
-            if ($product->getFile()) {
-                $product->upload();
-            }
-            
-            $em->persist($product);
-            $em->flush();
+            $productService = $this->get('product_service');
+            $productService->persistEdited($product);
 
             return $this->redirect($this->generateUrl("bookshop_admin_product_list"));
         }
