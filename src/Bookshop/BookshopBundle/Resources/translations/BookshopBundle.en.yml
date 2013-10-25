@@ -98,3 +98,14 @@ address:
       billing:  Edit default billing address
       shipping: Edit default shipping address
 
+checkout:
+  error:
+    please_login: Please login before checkout!
+    order:
+      not_found:  Order not found!
+      not_your:   This is not your order!
+      cannot_cancel: The order cannot be canceled!
+      bad:        The order is bad!
+      already_canceled: The order was already canceled!
+  success:
+    canceled: The order was canceled!

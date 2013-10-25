@@ -12,9 +12,11 @@ use Bookshop\BookshopBundle\Form\Type\AddressFormType;
 use Bookshop\BookshopBundle\Entity\Address;
 use Bookshop\BookshopBundle\Entity\BookshopOrder;
 
-class CheckoutController extends Controller {
+class CheckoutController extends Controller
+{
 
-    public function indexAction() {
+    public function indexAction()
+    {
         if (is_null($this->getUser()))
             $userid = 0;
         else
@@ -36,9 +38,10 @@ class CheckoutController extends Controller {
         }
     }
 
-    public function billingAction() {
+    public function billingAction()
+    {
         if (!$this->getUser()) {
-            $this->getRequest()->getSession()->getFlashBag()->add('error', "Please login before checkout!");
+            $this->setFlashMessage('error', 'checkout.error.please_login');
             $url = $this->getRequest()->headers->get("referer");
             return new RedirectResponse($url);
         }
@@ -91,7 +94,7 @@ class CheckoutController extends Controller {
     public function shippingAction() 
     {
         if (!$this->getUser()) {
-            $this->getRequest()->getSession()->getFlashBag()->add('error', "Please login before checkout!");
+            $this->setFlashMessage('error', 'checkout.error.please_login');
             $url = $this->getRequest()->headers->get("referer");
             return new RedirectResponse($url);
         }
@@ -101,17 +104,15 @@ class CheckoutController extends Controller {
         }
         
         $user = $this->getUser();
-        $userid = $this->getUser()->getID();
 
         $em = $this->getDoctrine()->getManager();
-        $order = $em->getRepository('BookshopBookshopBundle:BookshopOrder')->getCurrentOrder($userid);
+        $order = $em->getRepository('BookshopBookshopBundle:BookshopOrder')->getCurrentOrder($this->getUser()->getID());
         $address = new Address();
-        if ($user->getShippingAddress()) {
+        if ($user->getShippingAddress())
             $address = $user->getShippingAddress();
-        }
-        $request = $this->getRequest();
-
+        
         $form = $this->createForm(new AddressFormType(), $address);
+        $request = $this->getRequest();
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
         }
@@ -128,9 +129,10 @@ class CheckoutController extends Controller {
         return $this->render('BookshopBookshopBundle:Checkout:shipping.html.twig', array('form' => $form->createView()));
     }
 
-    public function shippingMethodAction(Request $request) {
+    public function shippingMethodAction(Request $request)
+    {
         if (!$this->getUser()) {
-            $this->getRequest()->getSession()->getFlashBag()->add('error', "Please login before checkout!");
+            $this->setFlashMessage('error', 'checkout.error.please_login');
             $url = $this->getRequest()->headers->get("referer");
             return new RedirectResponse($url);
         }
@@ -170,9 +172,10 @@ class CheckoutController extends Controller {
                 ));
     }
 
-    public function paymentAction() {
+    public function paymentAction()
+    {
         if (!$this->getUser()) {
-            $this->getRequest()->getSession()->getFlashBag()->add('error', "Please login before checkout!");
+            $this->setFlashMessage('error', 'checkout.error.please_login');
             $url = $this->getRequest()->headers->get("referer");
             return new RedirectResponse($url);
         }
@@ -201,9 +204,10 @@ class CheckoutController extends Controller {
                 ));
     }
 
-    public function reviewAction() {
+    public function reviewAction()
+    {
         if (!$this->getUser()) {
-            $this->getRequest()->getSession()->getFlashBag()->add('error', "Please login before checkout!");
+            $this->setFlashMessage('error', 'checkout.error.please_login');
             $url = $this->getRequest()->headers->get("referer");
             return new RedirectResponse($url);
         }
@@ -215,9 +219,10 @@ class CheckoutController extends Controller {
         return $this->render('BookshopBookshopBundle:Checkout:review.html.twig', array('order' => $order));
     }
     
-    public function cancelAction(){
+    public function cancelAction()
+    {
         if (!$this->getUser()) {
-            $this->getRequest()->getSession()->getFlashBag()->add('error', "Please login before checkout!");
+            $this->setFlashMessage('error', 'checkout.error.please_login');
             $url = $this->getRequest()->headers->get("referer");
             return new RedirectResponse($url);
         }
@@ -248,7 +253,7 @@ class CheckoutController extends Controller {
     public function userCancelAction(Request $request)
     {
         if (!$this->getUser()) {
-            $this->getRequest()->getSession()->getFlashBag()->add('error', "Please login before checkout!");
+            $this->setFlashMessage('error', 'checkout.error.please_login');
             $url = $this->getRequest()->headers->get("referer");
             return new RedirectResponse($url);
         }
@@ -263,28 +268,28 @@ class CheckoutController extends Controller {
         $order = new BookshopOrder();
         $order = $em->getRepository('BookshopBookshopBundle:BookshopOrder')->find($id);
         if(!$order){
-            $this->getRequest()->getSession()->getFlashBag()->add('error', "Order not found!");
+            $this->setFlashMessage('error', 'checkout.error.order.not_found');
             return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
         }
         $ok = true;
         if($order->getUser()->getId() != $user->getId()){
             $ok = false;
-            $this->getRequest()->getSession()->getFlashBag()->add('error', "This is not your order!");
+            $this->setFlashMessage('error', 'checkout.error.order.not_your');
             return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
         }
         elseif(!$order->getState()){
             $ok = false;
-            $this->getRequest()->getSession()->getFlashBag()->add('error', "The order is bad!");
+            $this->setFlashMessage('error', 'checkout.error.order.bad');
             return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
         }
         elseif(in_array($order->getState()->getId(), array(3,5) )){
             $ok = false;
-            $this->getRequest()->getSession()->getFlashBag()->add('error', "The order cannot be canceled!");
+            $this->setFlashMessage('error', 'checkout.error.order.cannot_cancel');
             return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
         }
         elseif($order->getState()->getId() == 4){
             $ok = false;
-            $this->getRequest()->getSession()->getFlashBag()->add('error', "The order was already canceled!");
+            $this->setFlashMessage('error', 'checkout.error.order.already_canceled');
             return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
         }
             
@@ -293,7 +298,7 @@ class CheckoutController extends Controller {
             $order->setState($state);
             $em->persist($order);
             $em->flush($order);
-            $this->getRequest()->getSession()->getFlashBag()->add('success', "The order was canceled!");
+            $this->setFlashMessage('error', 'checkout.success.canceled');
         }
         return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
     }
@@ -301,7 +306,7 @@ class CheckoutController extends Controller {
     public function placeOrderAction()
     {
         if (!$this->getUser()) {
-               $this->getRequest()->getSession()->getFlashBag()->add('error', "Please login before checkout!");
+               $this->setFlashMessage('error', 'checkout.error.please_login');
                $url = $this->getRequest()->headers->get("referer");
                return new RedirectResponse($url);
            }
@@ -334,9 +339,8 @@ class CheckoutController extends Controller {
     public function orderDetailsAction($id)
     {
         if (!$this->getUser()) {
-            $this->getRequest()->getSession()->getFlashBag()->add('error', "Please login before checkout!");
-            $url = $this->getRequest()->headers->get("referer");
-            return new RedirectResponse($url);
+            $this->setFlashMessage('error', 'checkout.error.please_login');
+            return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
         }
         $user = $this->getUser();
 
@@ -347,7 +351,6 @@ class CheckoutController extends Controller {
             return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
         }
         elseif($order->getUser()->getId() != $user->getId()){
-            $ok = false;
             $this->getRequest()->getSession()->getFlashBag()->add('error', "This is not your order!");
             return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
         }
@@ -355,7 +358,8 @@ class CheckoutController extends Controller {
     }
 
 
-    private function dispatchToStep(){
+    private function dispatchToStep()
+    {
         $user = $this->getUser();
         $userid = $user->getID();
 
@@ -375,6 +379,12 @@ class CheckoutController extends Controller {
         else
             return 'review';
         
+    }
+    
+    private function setFlashMessage($category, $value)
+    {
+        $value = $this->container->get('translator')->trans($value, array(), 'BookshopBundle');
+        $this->getRequest()->getSession()->getFlashBag()->add($category, $value);
     }
 
 }

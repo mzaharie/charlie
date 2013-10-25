@@ -52,8 +52,8 @@ class LoginListener {
 
         if (empty($cart)) {
             $cart = $this->em->getRepository('BookshopBookshopBundle:Cart')->getCart(0);
-            $cart[0]->setUserId($userid);
-            $this->em->persist($cart[0]);
+            $cart->setUserId($userid);
+            $this->em->persist($cart);
             $this->em->flush();
         }
         // ...

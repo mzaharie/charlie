@@ -98,3 +98,15 @@ address:
     title:
       billing:    Modificare adresă prestabilită de facturare
       shipping:   Modificare adresă prestabilită de livrare
+
+checkout:
+  error:
+    please_login: Autentifică-te mai întâi!
+    order:
+      not_found:  N-am găsit comanda!
+      not_your:   Aceasta nu este comanda dumneavoastră!
+      cannot_cancel: Comanda nu poate fi anulată!
+      bad:        Comanda este stricată!
+      already_canceled: Comanda a fost deja anulată!
+  success:
+    canceled: Comanda a fost anulată!
