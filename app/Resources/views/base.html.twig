@@ -6,6 +6,10 @@
         <link href="{{ asset ('bundles/bookshopbookshop/css/styles.css')}}" type="text/css" rel="stylesheet" />
         <link href="{{ asset ('bundles/bookshopbookshop/css/widgets.css')}}" type="text/css" rel="stylesheet" />
         {% endblock %}
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+        <script src="{{ asset ('bundles/bookshopbookshop/js/ajax.js')}}" type="text/javascript" ></script>
+
+
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
 
@@ -17,61 +21,68 @@
                     <div class="header">
                         <div class="quick-access">
                             {{ locale_switcher() }}
-                            <form id="search_mini_form" action="{{path('search')}}" method="get">
-                                <div class="form-search">
-                                    <label for="search">Search:</label>
-                                    <input id="search" type="text" name="q" value="" class="input-text" maxlength="128" />
-                                    <button type="submit" title="Search" class="button"><span><span>Search</span></span></button>
-                                </div>
-                            </form>
+                                <form id="search_mini_form" action="{{path('search')}}" method="get">
+                                    <div class="form-search">
+                                        <label for="search">Search:</label>
+                                        <input id="search" type="text" name="q" value="" class="input-text" maxlength="128" />
+                                        <button type="submit" title="Search" class="button"><span><span>Search</span></span></button>
+                                    </div>
+                                </form>
 
-                            <p class="welcome-msg">Hello <strong>{{ app.user ? app.user.firstname: 'Anonymous' }}</strong></p>
+                                <p class="welcome-msg">Hello <strong>{{ app.user ? app.user.firstname: 'Anonymous' }}</strong></p>
                             {{ knp_menu_render('BookshopBookshopBundle:Builder:linksMenu', {'template': 'BookshopBookshopBundle:Menu:links_menu.html.twig'}) }}
+                            </div>
                         </div>
                     </div>
-                </div>
             {% block navigation %}
-                <div class="nav-container">
+                    <div class="nav-container">
                     {{ knp_menu_render('BookshopBookshopBundle:Builder:mainMenu', {'template': 'BookshopBookshopBundle:Menu:knp_menu.html.twig'}) }}
-                    </div>
+                        </div>
             {% endblock%}
             {% block collayout %}
-                    <div class="main-container col3-layout">
-                        <div class="main">
+                        <div class="main-container col3-layout">
+                            <div class="main">
 
                             {% block body%}
                             {% endblock%}
                             {% block leftsidebar%}
-                            <div class="col-left sidebar"></div>
+                                <div class="col-left sidebar"></div>
                             {%endblock%}
-                        </div>
-                            {%block rightsidebar%}
-                        <div class="col-right sidebar">
-                                        {{ render(controller('BookshopBookshopBundle:Cart:index')) }}
                             </div>
+                            {%block rightsidebar%}
+                            <div class="col-right sidebar" id="cart">
+                                <script>
+                                    $(document).ready(function() {
+                                        loadCart('{{ path('cart') }}');
+                                    });
+                                    </script>
+                                </div>
                             {%endblock rightsidebar%}
-                        </div>
+                            </div>
                 {% endblock %}
                 {% block footer %}
-                        <div class="footer-container">
-                            <div class="footer">
-                                <ul>
-                                    <li><a href="#">About Us</a></li>
-                                    <li><a href="#">Customer Service</a></li>
-                                    <li class="last privacy"><a href="#">Privacy Policy</a></li>
-                                </ul>
+                            <div class="footer-container">
+                                <div class="footer">
+                                    <ul>
+                                        <li><a href="#">About Us</a></li>
+                                        <li><a href="#">Customer Service</a></li>
+                                        <li class="last privacy"><a href="#">Privacy Policy</a></li>
+                                    </ul>
 
-                                <ul class="links">
-                                    <li class="first" ><a href="#" title="Site Map" >Site Map</a></li>
-                                    <li ><a href="#" title="Search Terms" >Search Terms</a></li>
-                                    <li ><a href="#" title="Orders and Returns" >Orders and Returns</a></li>
-                                    <li class=" last" ><a href="#" title="Contact Us" >Contact Us</a></li>
-                                </ul>
+                                    <ul class="links">
+                                        <li class="first" ><a href="#" title="Site Map" >Site Map</a></li>
+                                        <li ><a href="#" title="Search Terms" >Search Terms</a></li>
+                                        <li ><a href="#" title="Orders and Returns" >Orders and Returns</a></li>
+                                        <li class=" last" ><a href="#" title="Contact Us" >Contact Us</a></li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
                 {% endblock %}
+                        </div>
                     </div>
-                </div>
-            </body>
+                    <script>
 
-        </html>
+                        </script>
+                    </body>
+
+                </html>
