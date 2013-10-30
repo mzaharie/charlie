@@ -8,82 +8,87 @@
         </div>
         <div class="welcome-msg">
             {% set fullname = app.user ? app.user.firstName~" "~app.user.lastName : 'Anonymous' %}
-            <p class="hello"><strong>{{'dashboard.greeting'|trans({'%fullname%' : fullname},bundle)}} </strong></p>
-            <p>{{'dashboard.info'|trans({},bundle)}}</p>
-        </div>
-        <div class="box-account box-recent">
-            <div class="box-head">
-                <h2>Recent Orders</h2>
-                <a href="#">View All</a>
+                <p class="hello"><strong>{{'dashboard.greeting'|trans({'%fullname%' : fullname},bundle)}} </strong></p>
+                <p>{{'dashboard.info'|trans({},bundle)}}</p>
             </div>
-            <table class="data-table" id="my-orders-table">
-                <col width="1" />
-                <col width="1" />
-                <col />
-                <col width="1" />
-                <col width="1" />
-                <col width="1" />
-                <thead>
-                    <tr class="first last">
-                        <th>Order #</th>
-                        <th>Date</th>
-                        <th>Ship To</th>
-                        <th><span class="nobr">Order Total</span></th>
-                        <th>Status</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="box-account box-recent">
+                <div class="box-head">
+                    <h2>Recent Orders</h2>
+                    <a href="{{path('dashboard_orders')}}">View All</a>
+                </div>
+                <table class="data-table" id="my-orders-table">
+                    <col width="1" />
+                    <col width="1" />
+                    <col />
+                    <col width="1" />
+                    <col width="1" />
+                    <col width="1" />
+                    <thead>
+                        <tr class="first last">
+                            <th>Order #</th>
+                            <th>Date</th>
+                            <th>Ship To</th>
+                            <th><span class="nobr">Order Total</span></th>
+                            <th>Status</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% if orders|length > 0 %}
+                    {% for order in orders %}
+
                     <tr class="first last odd">
-                        <td>100027773</td>
-                        <td><span class="nobr">7/24/12</span></td>
-                        <td>John Doe</td>
-                        <td><span class="price">$2,699.99</span></td>
-                        <td><em>Pending</em></td>
+                        <td>{{"%1$08d"|format(order.id)}}</td>
+                        <td><span class="nobr">{% if not order.date is null %}{{order.date|date('Y-m-d')}}{% endif %}</span></td>
+                        <td>{% if not order.shippingAddress is null %}{{order.shippingAddress.firstName}} {{order.shippingAddress.lastName}}{% endif %}</td>
+                        <td><span class="price">{{order.total|number_format(2,".",",")}}</span></td>
+                        <td><em>{% if not order.state is null %}{{order.state.name}}{% endif %}</em></td>
                         <td class="a-center last">
                             <span class="nobr">
                                 <a href="#">View Order</a>
                             </span>
                         </td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="box-account box-info">
-            <div class="box-head">
-                <h2>{{'menu.dashboard.account_info'|trans({},bundle)}}</h2>
-            </div>
-            <div class="col2-set">
-                <div class="col-1">
-                    <div class="box">
-                        <div class="box-title">
-                            <h3>Contact Information</h3>
-                            <a href="{{path("fos_user_profile_show")}}">{{'profile.edit.label'|trans({},bundle)}}</a>
-                        </div>
-                        <div class="box-content">
-                            <p>
-                                {{ render(controller('BookshopBookshopBundle:Profile:showMinim')) }}
-                            </p>
-                        </div>
-                    </div>
+                    {% endfor %}
+                    {% endif %}
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <div class="col2-set">
-                <div class="box">
-                    <div class="box-title">
-                        <h3>{{'address.label_book'|trans({},bundle)}}</h3>
+                <div class="box-account box-info">
+                    <div class="box-head">
+                        <h2>{{'menu.dashboard.account_info'|trans({},bundle)}}</h2>
                     </div>
-                    <div class="box-content">
+                    <div class="col2-set">
                         <div class="col-1">
-                            {{ render(controller('BookshopBookshopBundle:Dashboard:billingAddressShow')) }}
+                            <div class="box">
+                                <div class="box-title">
+                                    <h3>Contact Information</h3>
+                                    <a href="{{path("fos_user_profile_show")}}">{{'profile.edit.label'|trans({},bundle)}}</a>
+                                </div>
+                                <div class="box-content">
+                                    <p>
+                                {{ render(controller('BookshopBookshopBundle:Profile:showMinim')) }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-2">
+                        <div class="col2-set">
+                            <div class="box">
+                                <div class="box-title">
+                                    <h3>{{'address.label_book'|trans({},bundle)}}</h3>
+                                </div>
+                                <div class="box-content">
+                                    <div class="col-1">
+                            {{ render(controller('BookshopBookshopBundle:Dashboard:billingAddressShow')) }}
+                                        </div>
+                                        <div class="col-2">
                             {{ render(controller('BookshopBookshopBundle:Dashboard:shippingAddressShow')) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}

@@ -1,0 +1,48 @@
+{% extends "BookshopBookshopBundle::layout.html.twig" %}
+
+
+{% block collayout %}
+<div class="main-container col2-right-layout">
+    <div class="main">
+        <div class="col-main">
+            {% block body %}
+            <div class="page-title">
+                <h1>Checkout</h1>
+            </div>
+            <ol class="opc" id="checkoutSteps">
+                <li id="opc-shipping_method" class="section slide4 allow active">
+                    <div class="step-title">
+                        <span class="number">3</span>
+                        <h2>Shipping Method</h2>
+                        <a href="#">Edit</a>
+                    </div>
+                    <div id="checkout-step-shipping_method" class="step a-item">
+                        <form id="co-shipping-method-form" action="{{path("shipping_method", {'back_route': back_route})}}" method="POST">
+                            <fieldset>
+                                <dl class="sp-methods" id="checkout-payment-method-load">
+                                    {% for child in form.shipping %}
+                                        <dt>
+                                        {{ form_widget(child) }}
+                                        {{ form_label(child) }}
+                                        </dt>
+                                    {% endfor %}
+                                </dl>
+                                    {{ form_rest(form) }}
+                            </fieldset>
+                        
+                        <div class="buttons-set" id="payment-buttons-container">
+                            <p class="required">* Required Fields</p>
+                            <p class="back-link"><a href="{{path(back_route)}}" ><small>« </small>Back</a></p>
+                            <button type="submit" class="button"><span><span>Continue</span></span></button>
+                        </div>
+                        </form>
+                    </div>
+                </li>
+            </ol>
+            {% endblock %}
+        </div>
+        {% block leftsidebar %}{% endblock %}
+        {% block rightsidebar%}{% endblock %}
+    </div>
+</div>
+{% endblock %}

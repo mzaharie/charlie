@@ -1,0 +1,138 @@
+{% extends "BookshopAdminBundle::layout.html.twig" %}
+{% block body %}
+<!--  start page-heading -->
+<div id="page-heading">
+    <h1>Order details</h1>
+</div>
+<!-- end page-heading -->
+
+<table border="0" width="100%" cellpadding="0" cellspacing="0" id="content-table">
+    <tr>
+        <th rowspan="3" class="sized"><img src="{{asset('bundles/bookshopadmin/images/shared/side_shadowleft.jpg') }}" width="20" height="300" alt="" /></th>
+        <th class="topleft"></th>
+        <td id="tbl-border-top">&nbsp;</td>
+        <th class="topright"></th>
+        <th rowspan="3" class="sized"><img src="{{asset('bundles/bookshopadmin/images/shared/side_shadowright.jpg') }}" width="20" height="300" alt="" /></th>
+    </tr>
+    <tr>
+        <td id="tbl-border-left"></td>
+        <td>
+            <!--  start content-table-inner ...................................................................... START -->
+            <div id="content-table-inner">
+
+                
+                <!--  start table-content  -->
+                <div id="table-content">
+                    <!--  start product-table ..................................................................................... -->
+                    <form id="mainform" action="">
+                        <table border="0" width="100%" cellpadding="0" cellspacing="0" id="product-table">
+                            <tr>
+                                <th class="table-header-repeat line-left minwidth-1"><a href>Title</a></th>
+                                <th class="table-header-repeat line-left minwidth-1"><a href>Quantity</a></th>
+                                <th class="table-header-repeat line-left minwidth-1"><a href>Price</a></th>
+                                <th class="table-header-repeat line-left minwidth-1"><a href>Subtotal</a></th>
+                            </tr>
+                            {% for cartitem in  cartitems %}
+                            <tr {% if loop.index is odd %}{% else %}class="alternate-row"{% endif %}>
+                                <td>{{cartitem.title}}</td>
+                                <td>{{cartitem.quantity}}</td>
+                                <td>{{cartitem.price}}</td>
+                                <td>{{cartitem.price*cartitem.quantity}}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <th colspan="2"></th><td colspan="2">Subtotal: {{order.total}} </td>
+                            <tr>
+                            <tr>
+                                <th></th><th></th><td colspan="2">Shipping(): </td>
+                            <tr>
+                            <tr>
+                                <th></th><th></th><td colspan="2">Total: {{order.total}}</td>
+                            <tr>
+                        </table>
+                        <!--  end product-table................................... --> 
+                    </form>
+                </div>
+                <!--  end content-table  -->
+                <div id="content-table-inner">
+
+                
+                    {%if order.billingAddress %}
+                    <form id="mainform" action="">
+                        <table border="0" width="30%" cellpadding="0" cellspacing="0" id="product-table">
+                            <tr>
+                                <th class="table-header-repeat line-left"><a href>Billing Address</a></th>
+                            <tr>
+                            <tr>
+                                <td>{{order.billingAddress.address}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{order.billingAddress.city}} {{order.billingAddress.country}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{order.billingAddress.firstName}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{order.billingAddress.lastName}}</td>
+                            </tr>
+                        </table>
+                        <!--  end product-table................................... --> 
+                    </form>
+                    {% endif %}
+                    {%if order.shippingAddress %}
+                    <form id="mainform" action="">
+                        <table border="0" width="30%" cellpadding="0" cellspacing="0" id="product-table">
+                            <tr>
+                                <th class="table-header-repeat line-left"><a href>Shipping Address</a></th>
+                            <tr>
+                            <tr>
+                                <td>{{order.shippingAddress.address}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{order.shippingAddress.city}} {{order.shippingAddress.country}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{order.shippingAddress.firstName}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{order.shippingAddress.lastName}}</td>
+                            </tr>
+                        </table>
+                        <!--  end product-table................................... --> 
+                    </form>
+                    {% endif %}
+
+                <!--  start paging..................................................... -->
+                <table border="0" cellpadding="0" cellspacing="0" id="paging-table">
+                    <tr>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+                <!--  end paging................ -->
+                {% if order.state.id == 1%}
+                    <a href="{{path('bookshop_admin_order_set_status',{'id': order.id, 'stateId': states[1].id})}}" title="{{states[1].name}}" >{{states[1].name}}</a>&nbsp;&nbsp;
+                    <a href="{{path('bookshop_admin_order_set_status',{'id': order.id, 'stateId': states[2].id})}}" title="{{states[2].name}}" >{{states[2].name}}</a>&nbsp;&nbsp;
+                {% elseif order.state.id == 2 %}
+                    <a href="{{path('bookshop_admin_order_set_status',{'id': order.id, 'stateId': states[2].id})}}" title="{{states[2].name}}" >{{states[2].name}}</a>&nbsp;&nbsp;
+                    <a href="{{path('bookshop_admin_order_set_status',{'id': order.id, 'stateId': states[3].id})}}" title="{{states[3].name}}" >{{states[3].name}}</a>&nbsp;&nbsp;
+                {% elseif order.state.id == 3 %}
+                    <a href="{{path('bookshop_admin_order_set_status',{'id': order.id, 'stateId': states[3].id})}}" title="{{states[3].name}}" >{{states[3].name}}</a>&nbsp;&nbsp;
+                    <a href="{{path('bookshop_admin_order_set_status',{'id': order.id, 'stateId': states[4].id})}}" title="{{states[4].name}}" >{{states[4].name}}</a>&nbsp;&nbsp; 
+                {% endif %}
+
+                <div class="clear"></div>
+                <a href="{{path('bookshop_admin_order_list')}}" title="back to Orders page" style="float: right; padding-right: 70px">Back</a>
+
+            </div>
+            <!--  end content-table-inner ............................................END  -->
+        </td>
+        <td id="tbl-border-right"></td>
+    </tr>
+    <tr>
+        <th class="sized bottomleft"></th>
+        <td id="tbl-border-bottom">&nbsp;</td>
+        <th class="sized bottomright"></th>
+    </tr>
+</table>
+{% endblock %}

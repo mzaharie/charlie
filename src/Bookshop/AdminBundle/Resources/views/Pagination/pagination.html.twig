@@ -18,10 +18,10 @@
         
 
     {% if previous is defined %}
+                {% if previous != 1 %}
                 <a href="{{ path(route, query|merge({(pageParameterName): 1})) }}" class="page-far-left" ></a>
+                {% endif %}
                 <a href="{{ path(route, query|merge({(pageParameterName): previous})) }}" class="page-left" ></a>
-    {% else %}
-                
     {% endif %}
 
     
@@ -39,10 +39,12 @@
 
     {% if next is defined %}
                 <a href="{{ path(route, query|merge({(pageParameterName): next})) }}" class="page-right"></a>
-                <a href="{{ path(route, query|merge({(pageParameterName): pageCount})) }}" class="page-far-right"></a>
-    {% else %}
-                <!-- <span>&nbsp;&raquo;</span> -->
+                {% if next != pageCount %}
+                    <a href="{{ path(route, query|merge({(pageParameterName): pageCount})) }}" class="page-far-right"></a>
+                {% endif %}
+                    
     {% endif %}
+    
                 
 {% endif %}
     </div>

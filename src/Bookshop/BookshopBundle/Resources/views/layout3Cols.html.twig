@@ -1,11 +1,15 @@
 {% extends '::base.html.twig' %}
 
-{%block collayout%}
-    <div class="main-container col3-layout">
-        <div class="main">
+{%block layout%}
+<div class="main-container col3-layout">
+    <div class="main">
+        <div class="col-wrapper">
+
             {% block body %}
-                {{parent()}}
+              {% block fos_user_content %}
+                {% endblock %}
             {% endblock body %}
         </div>
     </div>
-{%endblock collayout%}
+</div>
+{%endblock layout%}

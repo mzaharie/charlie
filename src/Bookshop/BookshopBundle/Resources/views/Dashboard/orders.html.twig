@@ -1,0 +1,60 @@
+{% extends "BookshopBookshopBundle::dashboardLayout.html.twig" %}
+{% block fos_user_content %}
+
+
+<div class="box-account box-recent">
+    <div class="box-head">
+        <h2>Your Orders</h2>
+        {{ knp_pagination_render(orders) }}
+    </div>
+    <table class="data-table" id="my-orders-table">
+        <col width="1" />
+        <col width="1" />
+        <col />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <thead>
+            <tr class="first last">
+                <th>Order #</th>
+                <th>Date</th>
+                <th>Ship To</th>
+                <th><span class="nobr">Order Total</span></th>
+                <th>Status</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if orders|length > 0 %}
+                {% for order in orders %}
+                    {% if loop.index is odd %}
+                <tr class="first last odd">
+                    {% else %}
+                    <tr class="first last even">
+                    {% endif %}
+                            <td>{{"%1$08d"|format(order.id)}}</td>
+                            <td><span class="nobr">{{order.date|date('Y-m-d')}}</span></td>
+                            <td>{{order.shippingAddress.firstName}} {{order.shippingAddress.lastName}}</td>
+                            <td><span class="price">{{order.total|number_format(2,".",",")}}</span></td>
+                            <td><em>{{order.state.name}}</em></td>
+                            <td class="a-center last">
+                                <span class="nobr">
+                                    <form method="post" action="{{path('dashboard_vieworder')}}">
+                                        <input type="hidden" value="{{order.id}}" name="id">
+                                        <button class="link" >View Order</button>
+                                    </form>
+                                </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+                <div class="box-head">
+                {{ knp_pagination_render(orders) }}
+                    </div>
+                </div>
+
+
+
+{% endblock %}

@@ -4,3 +4,6 @@ bookshop_admin_order_list:
 bookshop_admin_order_set_status:
   pattern:  /{id}/{stateId}
   defaults: { _controller: BookshopAdminBundle:OrderAdmin:setState }
+bookshop_admin_order_view:
+  pattern:  /{id}
+  defaults: { _controller: BookshopAdminBundle:OrderAdmin:view }

@@ -4,10 +4,11 @@
 <div class="main-container col2-left-layout">
     <div class="main">
     {% block body%}
-    <div class="col-main">
+
+            <div class="col-main">
         {% block fos_user_content %}
         {% endblock %}
-    </div>
+                </div>
 
         {% block leftsidebar%}
 
@@ -24,13 +25,14 @@
                 </div>
             </div>
             <!-- render cart -->
-            {{ render(controller('BookshopBookshopBundle:Cart:index')) }}
-        </div>
 
+            {{ render(controller('BookshopBookshopBundle:Cart:index')) }}
+                </div>
 
         {% endblock leftsidebar%}
 
     {% endblock %}
-    </div>
-</div>
+
+            </div>
+        </div>
 {%endblock%}

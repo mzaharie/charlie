@@ -26,7 +26,8 @@
                     <table border="0" cellpadding="0" cellspacing="0"  id="id-form">
                         <tr>
                             <th valign="top">Username:</th>
-                            <td><input type="text" name="username" class="inp-form" value="{% if 'username' in app.request.requesturi %}{{ app.request.query.all['username']}}{% endif %}"/></td>
+                            <td><input type="text" name="username" class="inp-form" value="{% if 'username' in app.request.query.all|keys %}{{ app.request.query.all['username']}}{% endif %}"/>
+                            </td>
                             <td></td>
                         </tr>
                         <tr>
@@ -35,7 +36,7 @@
                                 <select name="state">
                                     <option value="" >All</option>
                                     {% for state in states %}
-                                    <option value="{{ state.id }}" {% if 'state' in app.request.requesturi and app.request.query.all['state'] == state.id %} selected {% endif %}>{{ state.name }}</option>
+                                    <option value="{{ state.id }}" {% if 'state' in app.request.query.all|keys and app.request.query.all['state'] == state.id %} selected {% endif %}>{{ state.name }}</option>
                                     {%  endfor %}
                                 </select>
                             </td>
@@ -47,7 +48,7 @@
                                 {% set date_filters ={'all': 'All', 'day': '1 day ago', 'month': '1 month ago', 'year': '1 year ago'} %}
                                 <select name="created">
                                     {% for key,value in date_filters %}
-                                    <option value="{{key}}" {% if 'created' in app.request.requesturi and app.request.query.all['created'] == key %} selected {% endif %}>{{value}}</option>   
+                                    <option value="{{key}}" {% if 'created' in app.request.query.all|keys and app.request.query.all['created'] == key %} selected {% endif %}>{{value}}</option>   
                                     {% endfor %}
                                 </select>
                             </td>
@@ -98,7 +99,7 @@
                                         <a href="{{path('bookshop_admin_order_set_status',{'id': order.id, 'stateId': states[3].id})}}" title="{{states[3].name}}" >{{states[3].name}}</a>
                                         <a href="{{path('bookshop_admin_order_set_status',{'id': order.id, 'stateId': states[4].id})}}" title="{{states[4].name}}" >{{states[4].name}}</a>
                                     {% endif %}
-                                    <a href="" title="View" class="icon-1 info-tooltip"></a>
+                                    <a href="{{path('bookshop_admin_order_view', {'id': order.id})}}" title="View" class="icon-1 info-tooltip"></a>
                                     <a href="" title="Delete" class="icon-2 info-tooltip"></a>
                                 </td>
                             </tr>

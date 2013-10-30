@@ -10,9 +10,14 @@ use Bookshop\BookshopBundle\Form\Type\AddressFormType;
 class DashboardController extends Controller {
 
     public function indexAction() {
+        $em = $this->getDoctrine()->getManager();
         $user = $this->get('security.context')->getToken()->getUser();
+        $orders = $em->getRepository('BookshopBookshopBundle:BookshopOrder')->getRecentNr($user->getId(), 3);
 
-        return $this->render('BookshopBookshopBundle:Dashboard:index.html.twig');
+        return $this->render('BookshopBookshopBundle:Dashboard:index.html.twig', array(
+                    'orders' => $orders
+                        )
+        );
     }
 
     public function billingAddressShowAction() {
@@ -23,7 +28,10 @@ class DashboardController extends Controller {
         //$em = $this->getDoctrine()->getManager();
         //$entity = $em->getRepository('BookshopBundle:Address')->find($id);
 
-        return $this->render('BookshopBookshopBundle:Dashboard:billingAddressShow.html.twig', array('billing_address' => $billingAddress));
+        return $this->render('BookshopBookshopBundle:Dashboard:billingAddressShow.html.twig', array(
+                    'billing_address' => $billingAddress
+                        )
+        );
     }
 
     public function shippingAddressShowAction() {
@@ -34,7 +42,10 @@ class DashboardController extends Controller {
         //$em = $this->getDoctrine()->getManager();
         //$entity = $em->getRepository('BookshopBundle:Address')->find($id);
 
-        return $this->render('BookshopBookshopBundle:Dashboard:shippingAddressShow.html.twig', array('shipping_address' => $shippingAddress));
+        return $this->render('BookshopBookshopBundle:Dashboard:shippingAddressShow.html.twig', array(
+                    'shipping_address' => $shippingAddress
+                        )
+        );
     }
 
     public function billingAddressEditAction() {
@@ -71,7 +82,10 @@ class DashboardController extends Controller {
             return $this->redirect($this->generateUrl('dashboard_index'));
         }
 
-        return $this->render('BookshopBookshopBundle:Dashboard:billingAddressEdit.html.twig', array('form' => $form->createView()));
+        return $this->render('BookshopBookshopBundle:Dashboard:billingAddressEdit.html.twig', array(
+                    'form' => $form->createView()
+                        )
+        );
     }
 
     public function billingAddressPreEditAction() {
@@ -82,9 +96,12 @@ class DashboardController extends Controller {
             $billingAddress = $user->getBillingAddress();
         }
 
-        return $this->render('BookshopBookshopBundle:Dashboard:billingAddrPreEdit.html.twig', array('billing_address' => $billingAddress));
+        return $this->render('BookshopBookshopBundle:Dashboard:billingAddrPreEdit.html.twig', array(
+                    'billing_address' => $billingAddress
+                        )
+        );
     }
-    
+
     public function shippingAddressEditAction() {
         $user = new User();
         $user = $this->get('security.context')->getToken()->getUser();
@@ -119,9 +136,12 @@ class DashboardController extends Controller {
             return $this->redirect($this->generateUrl('dashboard_index'));
         }
 
-        return $this->render('BookshopBookshopBundle:Dashboard:shippingAddressEdit.html.twig', array('form' => $form->createView()));
+        return $this->render('BookshopBookshopBundle:Dashboard:shippingAddressEdit.html.twig', array(
+                    'form' => $form->createView()
+                        )
+        );
     }
-    
+
     public function shippingAddressPreEditAction() {
         $user = new User();
         $user = $this->get('security.context')->getToken()->getUser();
@@ -130,7 +150,38 @@ class DashboardController extends Controller {
             $shippingAddress = $user->getShippingAddress();
         }
 
-        return $this->render('BookshopBookshopBundle:Dashboard:shippingAddrPreEdit.html.twig', array('shipping_address' => $shippingAddress));
+        return $this->render('BookshopBookshopBundle:Dashboard:shippingAddrPreEdit.html.twig', array(
+                    'shipping_address' => $shippingAddress
+                        )
+        );
+    }
+
+    public function ordersviewAction() {
+        $user = $this->get('security.context')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->getRepository('BookshopBookshopBundle:BookshopOrder')->getUserOrders($user->getId());
+
+        $paginator = $this->get('knp_paginator');
+
+        $orders = $paginator->paginate($query, $this->get('request')->query->get('page', 1), 10);
+
+        return $this->render('BookshopBookshopBundle:Dashboard:orders.html.twig', array(
+                    'orders' => $orders
+                        )
+        );
+    }
+
+    public function vieworderAction() {
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+        $order = $em->getRepository('BookshopBookshopBundle:BookshopOrder')->viewOrder($request->request->get('id'));
+        $referer = $this->getRequest()->headers->get('referer');
+
+        return $this->render('BookshopBookshopBundle:Dashboard:vieworder.html.twig', array(
+                    'order' => $order,
+                    'referrer' => $referer
+                        )
+        );
     }
 
 }

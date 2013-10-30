@@ -1,0 +1,155 @@
+{% extends "BookshopBookshopBundle::layout3Cols.html.twig"  %}
+{% block leftsidebar %}
+{% endblock %}
+{% block rightsidebar %}
+{% endblock %}
+
+{% block body %}
+
+<div class="cart">
+    <div class="page-title title-buttons">
+        <h1>Shopping Cart</h1>
+        <ul class="checkout-types">
+            <li>
+                <button type="button" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout" ><span><span>Proceed to Checkout</span></span></button>
+            </li>
+        </ul>
+    </div>
+{% for flashMessage in app.session.flashbag.get('success') %}
+    <ul class="messages">
+        <li class="success-msg">
+            <ul>
+                <div>{{ flashMessage }}</div>
+            </ul>
+        </li>
+    </ul>
+{% endfor %}
+{% for flashMessage1 in app.session.flashbag.get('error') %}
+    <ul class="messages">
+        <li class="error-msg">
+            <ul>
+                <div>{{ flashMessage1 }}</div>
+            </ul>
+        </li>
+    </ul>
+{% endfor %}
+    {#<ul class="messages">
+        <li class="success-msg">
+            <ul>
+                <li><span>Coalesce: Functioning On Impatience T-Shirt was added to your shopping cart.</span></li>
+            </ul>
+        </li>
+    </ul>#}
+    <form action="{{path('updatecart')}}" method="post">
+        <input type="hidden" name="cartid" value="{{cart.id}}">
+        <fieldset>
+            <table id="shopping-cart-table" class="data-table cart-table">
+                <colgroup>
+                    <col width="1" />
+                    <col />
+                    <col width="1" />
+                    <col width="1" />
+                    <col width="1" />
+                    <col width="1" />
+                    <col width="1" />
+                </colgroup>
+                <thead>
+                    <tr class="first last">
+                        <th rowspan="1">&nbsp;</th>
+                        <th rowspan="1"><span class="nobr">Product Name</span></th>
+                        <th class="a-center" colspan="1"><span class="nobr">Unit Price</span></th>
+                        <th rowspan="1" class="a-center">Qty</th>
+                        <th class="a-center" colspan="1">Subtotal</th>
+                        <th rowspan="1" class="a-center">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr class="first last">
+                        <td colspan="50" class="a-right last">
+                            <button type="button" title="Continue Shopping" onclick=" window.location.href = {{ path('bookshop_bookshop_homepage') }}" class="button btn-continue" ><span><span>Continue Shopping</span></span></button>
+                            <button type="submit" name="update_cart_action" value="update_qty" title="Update Shopping Cart" class="button btn-update"><span><span>Update Shopping Cart</span></span></button>
+                            <button type="button" onclick=" window.location.href = '{{ path('emtpycart',{'cartid':cart.id}) }}'" value="empty_cart" title="Clear Shopping Cart" class="button btn-empty" id="empty_cart_button"><span><span>Clear Shopping Cart</span></span></button>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+               {% for i in 0..items|length %} 
+                {% if items[i] is defined %} 
+                    {% if loop.index is odd %}
+                        <tr class="first odd">
+                        {% else %}
+                            <tr class="last even">
+                            {% endif %}
+                                    <td>
+                                        <a href="{{path('product',{'id':items[i].productId.id})}}" title="{{items[i].productId.title}}" class="product-image">
+                                            <img src="{%if items[i].productId.image!=null%}{{asset([items[i].productId.image.path,items[i].productId.image.filename]|join)}}{%endif%}" alt="Nine West Women's Lucero Pump" height="75" width="75" />
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <h2 class="product-name">
+                                            <a href="{{path('product',{'id':items[i].productId.id})}}">{{items[i].productId.title}}</a>
+                                        </h2>
+                                        <dl class="item-options">
+                                            <dt>Short Description</dt>
+                                            <dd>{{items[i].productId.shortdescription}}</dd>
+                                        </dl>
+                                    </td>
+                                    <td class="a-right">
+                                        <span class="cart-price">
+                                            <span class="price">${{items[i].productId.price}}</span>
+                                        </span>
+                                    </td>
+                                    <td class="a-center">
+                                        <input name="qty[{{items[i].id}}]" value="{{items[i].quantity}}" size="4" title="Qty" class="input-text qty" maxlength="12" />
+                                    </td>
+                                    <td class="a-right">
+                                        <span class="cart-price">
+                                            <span class="price">${{items[i].productId.price*items[i].quantity}}</span>
+                                        </span>
+                                    </td>
+                                    <td class="a-center last">
+                                        <a href="{{path('deleteproduct',{'id':items[i].id,'cartid':cart.id})}}" title="Remove item" class="btn-remove btn-remove2">Remove item</a>
+                                    </td>
+                                </tr>
+                 {% endif %}
+             {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </form>
+
+                <div class="cart-collaterals">
+                    <div class="totals">
+                        <table id="shopping-cart-totals-table">
+                            <colgroup>
+                                <col />
+                                <col width="1" />
+                            </colgroup>
+                            <tfoot>
+                                <tr>
+                                    <td style="" class="a-right" colspan="1">
+                                        <strong>Grand Total</strong>
+                                    </td>
+                                    <td style="" class="a-right">
+                                        <strong><span class="price">${{cart.total}}</span></strong>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td style="" class="a-right" colspan="1">Subtotal</td>
+                                    <td style="" class="a-right"><span class="price">${{cart.total}}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul class="checkout-types">
+                            <li>
+                                <button type="button" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout" ><span><span>Proceed to Checkout</span></span></button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+{% endblock %}

@@ -1,0 +1,421 @@
+{% extends 'BookshopBookshopBundle::layout.html.twig'%}
+{% block body%}
+{% for flashMessage in app.session.flashbag.get('success') %}
+    <ul class="messages">
+        <li class="success-msg">
+            <ul>
+                <div>{{ flashMessage }}</div>
+            </ul>
+        </li>
+    </ul>
+{% endfor %}
+{% for flashMessage1 in app.session.flashbag.get('error') %}
+    <ul class="messages">
+        <li class="error-msg">
+            <ul>
+                <div>{{ flashMessage1 }}</div>
+            </ul>
+        </li>
+    </ul>
+{% endfor %}
+<div class="breadcrumbs">
+    <ul>
+        <li class="home">
+            <a href="{{ path('bookshop_bookshop_homepage') }}" title="Go to Home Page">Home</a>
+            <span>/ </span>
+        </li>
+        <li class="category35">
+            <strong>Search results for "{{ string }}"</strong>
+        </li>
+    </ul>
+</div>
+<div class="col-main">
+    <div class="page-title category-title">
+        <h1>Search results for "{{ string }}"</h1>
+    </div>
+
+    <div class="category-products">
+        <div class="toolbar">
+            <div class="pager">
+                <p class="amount">
+                    <strong>{{ products.getTotalItemCount }} Products</strong>
+                </p>
+                    {{ knp_pagination_render(products) }}
+            </div>
+            <div class="sorter">
+                <div class="sort-by">
+                    <label>Sort By</label>
+                    <label {% if products.isSorted('a.title') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(products, 'Title'|trans({},'AcmeDemoBundle'), 'a.title') }}</label>
+                    <label {% if products.isSorted('a.price') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(products, 'Price'|trans({},'AcmeDemoBundle'), 'a.price') }}</label>
+                </div>
+                   {% if products.isSorted('a.title') %} <label>Sorted by Title {% if products.params.direction  == 'asc' %} Ascendent {% else %} Descendent {% endif %}</label>{% endif %}
+                   {% if products.isSorted('a.price') %} <label>Sorted by Price {% if products.params.direction  == 'asc' %} Ascendent {% else %} Descendent {% endif %}</label>{% endif %}
+            </div>
+        </div>
+            {% for product in  products %}
+                {% if loop.index % 3 == 1 %}
+        <ul class="products-grid">
+            <li class="item first">
+                <a href="{{path('product',{'id':product.id})}}" title="{{product.title}}" class="product-image">
+                    <img src="{%if product.image!=null%}{{asset([product.image.path,product.image.filename]|join)}}{%endif%}"
+                         width="135" height="135" alt="{{product.title}}" />
+                </a>
+                <h2 class="product-name"><a href="{{path('product',{'id':product.id})}}" title="{{product.title}}">{{product.title}}</a></h2>
+                <div class="price-box">
+                    <span class="regular-price" id="product-price-168">
+                        <span class="price">{{product.price}} US$</span>
+                    </span>
+                </div>
+                    {%if product.stock>0%}
+                <div class="actions">
+                    <form action="{{path('addproduct')}}" method="post">
+                        <input type="hidden" name="quantity" value="1">
+                        <input type="hidden" name="productid" value="{{product.id}}">
+                        <button type="submit" title="Add to Cart" class="button btn-cart" >
+                            <span><span>Add to Cart</span></span>
+                        </button>
+                    </form>
+                </div>
+                    {% else %}
+                <div class="actions">
+                    <span class="regular-price"><span>Product not in stock</span></span>
+                </div>
+                    {%endif%}
+            </li>
+                {% endif %}
+                {% if loop.index % 3 == 2 %}
+            <li class="item">
+                <a href="{{path('product',{'id':product.id})}}" title=" {{product.title}}" class="product-image">
+                    <img src="{%if product.image!=null%}{{asset([product.image.path,product.image.filename]|join)}}{%endif%}"" width="135" height="135" alt=" {{product.title}}" />
+                </a>
+
+                <h2 class="product-name">
+                    <a href="{{path('product',{'id':product.id})}}" title=" {{product.title}}"> {{product.title}}</a>
+                </h2>
+
+                <div class="price-box">
+                    <span class="regular-price" id="product-price-170">
+                        <span class="price">{{product.price}} US$</span>
+                    </span>
+                </div>
+
+                   {%if product.stock>0%}
+                <div class="actions">
+                    <form action="{{path('addproduct')}}" method="post">
+                        <input type="hidden" name="quantity" value="1">
+                        <input type="hidden" name="productid" value="{{product.id}}">
+                        <button type="submit" title="Add to Cart" class="button btn-cart" >
+                            <span><span>Add to Cart</span></span>
+                        </button>
+                    </form>
+                </div>
+                    {% else %}
+                <div class="actions">
+                    <span class="regular-price"><span>Product not in stock</span></span>
+                </div>
+                    {%endif%}
+            </li>
+               {% endif %}
+               {% if loop.index % 3 == 0 %}
+            <li class="item">
+                <a href="{{path('product',{'id':product.id})}}" title="{{product.title}}" class="product-image">
+                    <img src="{%if product.image!=null%}{{asset([product.image.path,product.image.filename]|join)}}{%endif%}"" width="135" height="135" alt="{{product.title}}" />
+                </a>
+
+                <h2 class="product-name">
+                    <a href="{{path('product',{'id':product.id})}}" title="{{product.title}}">{{product.title}}</a>
+                </h2>
+
+                <div class="price-box">
+                    <span class="regular-price" id="product-price-170">
+                        <span class="price">{{product.price}} US$</span>
+                    </span>
+                </div>
+                    {%if product.stock>0%}
+                <div class="actions">
+                    <form action="{{path('addproduct')}}" method="post">
+                        <input type="hidden" name="quantity" value="1">
+                        <input type="hidden" name="productid" value="{{product.id}}">
+                        <button type="submit" title="Add to Cart" class="button btn-cart" >
+                            <span><span>Add to Cart</span></span>
+                        </button>
+                    </form>
+                </div>
+                    {% else %}
+                <div class="actions">
+                    <span class="regular-price"><span>Product not in stock</span></span>
+                </div>
+                    {%endif%}
+            </li>
+        </ul>    
+            {% endif %}
+            {% if loop.last%}
+        </ul>    
+            {% endif %}
+        {% endfor %}
+
+        <div class="toolbar-bottom">
+            <div class="toolbar">
+                <div class="pager">
+                    <p class="amount">
+                        <strong>{{ products.getTotalItemCount }} Products</strong>
+                    </p>
+                    {{ knp_pagination_render(products) }}
+                </div>
+                <div class="sorter">
+                    <div class="sort-by">
+                        <label>Sort By</label>
+                        <label {% if products.isSorted('a.title') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(products, 'Title'|trans({},'AcmeDemoBundle'), 'a.title') }}</label>
+                        <label {% if products.isSorted('a.price') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(products, 'Price'|trans({},'AcmeDemoBundle'), 'a.price') }}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+
+{% block leftsidebar%}
+<div class="col-left sidebar">
+    <div class="block block-layered-nav">
+        <div class="block-title">
+            <strong><span>Shop By</span></strong>
+        </div>
+        <div class="block-content">
+            <div class="currently">
+                <p class="block-subtitle">Currently Shopping by:</p>
+                <ol>
+                    {%if 'category' in app.request.requesturi %} 
+                        <li>
+                            <span class="label">Category:</span> <span class="value"> 
+                            {% set arr = ({}) %}
+                            {% for request,value in app.request.query.all %}
+                                {% if (request)!='category' %}
+                                    {% set arr = arr|merge({(request): value}) %} 
+                                {% else %}
+                                    {% set id = value %}
+                                    {% for category in categories %} 
+                                        {% if(category.id == id) %}
+                                            {{ category.name }} 
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {%endfor%}
+                                </span>
+                                <a class="btn-remove" href="
+                                       {% set arr = ({}) %}
+                                       {% for request,value in app.request.query.all %}
+                                            {% if (request)!='category' %}
+                                                {% set arr = arr|merge({(request): value}) %} 
+                                            {% endif %}
+                                        {%endfor%}
+                                        {% set parameters = '?' %}
+                                        {% for request, value in arr %} 
+                                            {% if not loop.last %}
+                                                {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                            {%else%}
+                                                {% set parameters = parameters ~(request)~'='~value %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {{parameters}}
+                                   " title="Remove This Item">Remove This Item</a> 
+                                </li>
+                    {% endif %}
+
+                    {%if 'pricerange' in app.request.requesturi %} 
+                                <li>
+                                    <span class="label">Price:</span> <span class="value">
+                             {% if 'pricerange=1' in app.request.requesturi %} 0,00 US$ - 49,99 US$ 
+                             {% elseif 'pricerange=2' in app.request.requesturi %} 50,00 US$ - 99,99 US$
+                             {% else %} 100,00 US$ and above {% endif %}
+                                        </span>
+                                        <a class="btn-remove" href="
+                                       {% set arr = ({}) %}
+                                       {% for request,value in app.request.query.all %}
+                                            {% if (request)!='pricerange' %}
+                                                {% set arr = arr|merge({(request): value}) %} 
+                                            {% endif %}
+                                        {%endfor%}
+                                        {% set parameters = '?' %}
+                                        {% for request, value in arr %} 
+                                            {% if not loop.last %}
+                                                {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                            {%else%}
+                                                {% set parameters = parameters ~(request)~'='~value %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {{parameters}}
+                                           " title="Remove This Item">Remove This Item</a> 
+                                        </li>
+                    {% endif %}
+                    {%if 'stock' in app.request.requesturi %} 
+                                        <li>
+                                            <span class="label">Stock:</span> <span class="value"> {%if 'stock=1' in app.request.requesturi %} Available {% else %} Soon {% endif %} </span>
+                                            <a class="btn-remove" href="
+                                       {% set arr = ({}) %}
+                                       {% for request,value in app.request.query.all %}
+                                            {% if (request)!='stock' %}
+                                                {% set arr = arr|merge({(request): value}) %} 
+                                            {% endif %}
+                                        {%endfor%}
+                                        {% set parameters = '?' %}
+                                        {% for request, value in arr %} 
+                                            {% if not loop.last %}
+                                                {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                            {%else%}
+                                                {% set parameters = parameters ~(request)~'='~value %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {{parameters}}
+                                               " title="Remove This Item">Remove This Item</a> 
+                                            </li>
+                    {% endif %}
+                                        </ol>
+                                    </div>
+                {% if ('pricerange' in app.request.requesturi) or ('stock' in app.request.requesturi) or ('category' in app.request.requesturi) %}
+                                    <div class="actions"><a href="
+                            {% set arr = ({}) %}
+                            {% for request,value in app.request.query.all %}
+                                {% if (request)!='pricerange' and (request)!='stock' and (request)!='category' %}
+                                    {% set arr = arr|merge({(request): value}) %} 
+                                {% endif %}
+                            {%endfor%}
+                            {% set parameters = '?' %}
+                            {% for request, value in arr %} 
+                                {% if not loop.last %}
+                                    {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                {%else%}
+                                    {% set parameters = parameters ~(request)~'='~value %}
+                                {% endif %}
+                            {% endfor %}
+                            {{parameters}}
+                                                            ">Clear All</a></div>
+                {% endif %}
+                    {% if not(('pricerange' in app.request.requesturi) and ('stock' in app.request.requesturi) and ('category' in app.request.requesturi)) %}<p class="block-subtitle">Shopping Options</p>{% endif %}
+                                    <dl id="narrow-by-list">
+                                    {% if not('category' in app.request.requesturi) %}
+                                            <dt>Category</dt>
+                                            <dd>
+                                                <ol>
+                                                {% for category in categories %}
+                                                        <li><a href="
+                                                        {% set arr = ({}) %}
+                                                        {% for request,value in app.request.query.all %}
+                                                            {% set arr = arr|merge({(request): value}) %} 
+                                                        {%endfor%}
+                                                        {% set arr = arr|merge({'page':'1','category':category.id}) %}
+                                                        {% set parameters = '?' %}
+                                                        {% for request, value in arr %} 
+                                                            {% if not loop.last %}
+                                                                {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                                            {%else%}
+                                                                {% set parameters = parameters ~(request)~'='~value %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        {{parameters}}
+                                                               ">{{ category.name }}</a></li>
+                                                {% endfor %}
+                                                        </ol>
+                                                    </dd>
+                                    {% endif %}
+                                    {% if not('pricerange' in app.request.requesturi) %}
+                                                    <dt>Price</dt>
+                                                    <dd>
+                                                        <ol>
+                                                            <li><a href="
+                                            {% set arr = ({}) %}
+                                            {% for request,value in app.request.query.all %}
+                                                {% set arr = arr|merge({(request): value}) %} 
+                                            {%endfor%}
+                                            {% set arr = arr|merge({'page':'1','pricerange':'1'}) %}
+                                            {% set parameters = '?' %}
+                                            {% for request, value in arr %} 
+                                                {% if not loop.last %}
+                                                    {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                                {%else%}
+                                                    {% set parameters = parameters ~(request)~'='~value %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {{parameters}}
+                                                                   "><span class="price">0,00 US$</span> - <span class="price">49,99 US$</span></a></li>
+                                                                   <li><a href="
+                                            {% set arr = ({}) %}
+                                            {% for request,value in app.request.query.all %}
+                                                    {% set arr = arr|merge({(request): value}) %} 
+                                            {%endfor%}
+                                            {% set arr = arr|merge({'page':'1','pricerange':'2'}) %}
+                                            {% set parameters = '?' %}
+                                            {% for request, value in arr %} 
+                                                {% if not loop.last %}
+                                                    {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                                {%else%}
+                                                    {% set parameters = parameters ~(request)~'='~value %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {{parameters}}
+                                                                          "><span class="price">50,00 US$</span> - <span class="price">99,99 US$</span></a></li>
+                                                                          <li><a href="
+                                            {% set arr = ({}) %}
+                                            {% for request,value in app.request.query.all %}
+                                                    {% set arr = arr|merge({(request): value}) %} 
+                                            {%endfor%}
+                                            {% set arr = arr|merge({'page':'1','pricerange':'3'}) %}
+                                            {% set parameters = '?' %}
+                                            {% for request, value in arr %} 
+                                                {% if not loop.last %}
+                                                    {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                                {%else%}
+                                                    {% set parameters = parameters ~(request)~'='~value %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {{parameters}}
+                                                                                 "><span class="price">100,00 US$</span> and above</a></li>
+                                                                              </ol>
+                                                                          </dd>
+                    {% endif %}
+                    {% if not('stock' in app.request.requesturi) %}
+                                                                          <dt>Stock</dt>
+                                                                          <dd>
+                                                                              <ol>
+                                                                                  <li><a href="
+                                            {% set arr = ({}) %}
+                                            {% for request,value in app.request.query.all %}
+                                                    {% set arr = arr|merge({(request): value}) %} 
+                                            {%endfor%}
+                                            {% set arr = arr|merge({'page':'1','stock':'1'}) %}
+                                            {% set parameters = '?' %}
+                                            {% for request, value in arr %} 
+                                                {% if not loop.last %}
+                                                    {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                                {%else%}
+                                                    {% set parameters = parameters ~(request)~'='~value %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {{parameters}}
+                                                                                         ">Available</a></li>
+                                                                                         <li><a href="
+                                            {% set arr = ({}) %}
+                                            {% for request,value in app.request.query.all %}
+                                                    {% set arr = arr|merge({(request): value}) %} 
+                                            {%endfor%}
+                                            {% set arr = arr|merge({'page':'1','stock':'0'}) %}
+                                            {% set parameters = '?' %}
+                                            {% for request, value in arr %} 
+                                                {% if not loop.last %}
+                                                    {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                                {%else%}
+                                                    {% set parameters = parameters ~(request)~'='~value %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {{parameters}}
+                                                                                                ">Soon</a></li>
+                                                                                             </ol>
+                                                                                         </dd>
+                    {% endif %}
+                                                                                      </dl>
+                                                                                  </div>
+                                                                              </div>
+                                                                          </div>
+
+{% endblock%}
+

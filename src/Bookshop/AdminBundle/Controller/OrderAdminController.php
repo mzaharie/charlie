@@ -4,10 +4,7 @@ namespace Bookshop\AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Bookshop\BookshopBundle\Entity\User;
-use Bookshop\BookshopBundle\Entity\Address;
-use Bookshop\BookshopBundle\Entity\State;
-use Bookshop\BookshopBundle\Entity\BookshopOrder;
+use Symfony\Component\HttpFoundation\Request;
 /**
  * Description of OrderAdminController
  *
@@ -15,24 +12,9 @@ use Bookshop\BookshopBundle\Entity\BookshopOrder;
  */
 class OrderAdminController extends Controller{
     
-    public function indexAction() {
-        $filter = $this->createSqlFilter();
-        
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $count = $em
-                ->createQuery('SELECT COUNT(o) FROM BookshopBookshopBundle:BookshopOrder o 
-                    INNER JOIN BookshopBookshopBundle:User u WITH u = o.user 
-                    INNER JOIN BookshopBookshopBundle:State s WITH s = o.state 
-                    WHERE 1=1' . $filter)
-                ->getSingleScalarResult();
-        
-        $dql = "SELECT o FROM BookshopBookshopBundle:BookshopOrder o 
-                    INNER JOIN BookshopBookshopBundle:User u WITH u = o.user 
-                    INNER JOIN BookshopBookshopBundle:State s WITH s = o.state 
-                    WHERE 1=1";
-        $dql.=$filter;
-
-        $query = $em->createQuery($dql)->setHint('knp_paginator.count', $count);
+        $query = $em->getRepository('BookshopBookshopBundle:BookshopOrder')->getAllOrdersQuery($request);
         
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -63,36 +45,19 @@ class OrderAdminController extends Controller{
         return new RedirectResponse($url);
     }
     
-    private function createSqlFilter(){
-        $filter = "";
-        if (isset($_GET['username'])) {
-            $filter.= " AND u.username like '%" . $_GET['username'] . "%'";
+    public function viewAction($id){
+        $em = $this->getDoctrine()->getManager();
+        
+        $order = $em->getRepository("BookshopBookshopBundle:BookshopOrder")->find($id);
+        $cartitems = null;
+        if($order->getCart()){
+        $cartitems = $em->getRepository('BookshopBookshopBundle:CartItems')->getItems($order->getCart()->getId());
         }
-        if (isset($_GET['state']) && strlen($_GET['state'])>0) {
-            $filter.= " AND s.id = " . $_GET['state'];
-        }
-
-        if (isset($_GET['created'])){
-            $now = new \DateTime();
-            $nowStr = $now->format("Y-m-d");
-            $oneYearAgoStr = date("Y-m-d", strtotime(date("Y-m-d", strtotime($nowStr)) . " - 1 year"));
-            
-            switch ($_GET['created']) {
-                case 'all':
-                    break;
-                case 'day':
-                    $filter .= " AND o.date > DATE_SUB('$nowStr', 1, 'day')";
-                    break;
-                case 'month':
-                    $filter .= " AND o.date > DATE_SUB('$nowStr', 1, 'month')";
-                    break;
-                case 'year':
-                    $filter .= " AND o.date > '$oneYearAgoStr'"; //DATE_SUB don'twork for years
-                    break;
-            }
-        }
-        return $filter;
+        $states = $em->getRepository("BookshopBookshopBundle:State")->findAll();
+        
+        return $this->render('BookshopAdminBundle:OrderAdmin:view.html.twig', array('order' => $order, 'cartitems' =>$cartitems, 'states' => $states));
     }
+    
 }
 
 ?>

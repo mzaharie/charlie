@@ -21,3 +21,14 @@ bookshop_admin_user_edit:
     defaults: { _controller: BookshopAdminBundle:UserAdmin:edit }
     requirements:
       _method: POST
+      
+      
+bookshop_admin_newuser_edit:
+    pattern:  /newuser/
+    defaults: { _controller: BookshopAdminBundle:UserAdmin:newuser }
+    
+bookshop_admin_user_new:
+    pattern:  /newuser/
+    defaults: { _controller: BookshopAdminBundle:UserAdmin:newuser }
+    requirements:
+      _method: POST

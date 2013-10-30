@@ -1,0 +1,190 @@
+{% extends "BookshopBookshopBundle::layout3Cols.html.twig" %}
+{% block leftsidebar %}
+{% endblock %}
+{% block body %}
+<div class="page-title">
+    <h1>Order Details</h1>
+</div>
+<ol class="opc" id="checkoutSteps">
+    <li id="opc-review" class="section slide6 allow active">
+        <div class="step-title">
+            <h2>Order Detail</h2>
+        </div>
+        <div id="checkout-step-review" class="step a-item">
+            <div class="order-review" id="checkout-review-load">
+                <div class="dashboard">
+                    <div class="box-account box-info">
+                        <table id="shopping-cart-table" class="data-table cart-table">
+                            <colgroup>
+                                <col width="1" />
+                                <col />
+                                <col width="1" />
+                                <col width="1" />
+                                <col width="1" />
+                                <col width="1" />
+                            </colgroup>
+                            <thead>
+                                <tr class="first last">
+                                    <th rowspan="1">&nbsp;</th>
+                                    <th rowspan="1"><span class="nobr">Product Name</span></th>
+                                    <th class="a-center" colspan="1"><span class="nobr">Unit Price</span></th>
+                                    <th rowspan="1" class="a-center">Qty</th>
+                                    <th class="a-center" colspan="1">Subtotal</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                               {% for cartitem in order.cart.cartitems %} 
+                                    {% if(loop.index is odd) %}
+                                    <tr class="first odd"> 
+                                     {% else %}
+                                        <tr class="last even">
+                                            {% endif %}
+                                                <td>
+                                                    <a href="{{path('product',{'id':cartitem.productid.id})}}" title="{{ cartitem.productid.title }}" class="product-image">
+                                                        <img src="
+                                                             {% if cartitem.productid.image.path!=null %}{{asset([cartitem.productid.image.path,cartitem.productid.image.filename]|join)}}{% endif %}
+                                                             " alt="{{ cartitem.productid.title }}" height="75" width="75" />
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <h2 class="product-name">
+                                                            <a href="{{path('product',{'id':cartitem.productid.id})}}">{{ cartitem.productid.title }}</a>
+                                                        </h2>
+                                                        <dl class="item-options">
+                                                            <dt>Short Description</dt>
+                                                            <dd>{{ cartitem.productid.shortdescription }}</dd>
+                                                        </dl>
+                                                    </td>
+
+                                                    <td class="a-right">
+                                                        <span class="cart-price">
+                                                            <span class="price">${{ cartitem.productid.price }}</span>
+                                                        </span>
+                                                    </td>
+                                                    <td class="a-center">
+                                                        <span class="qty">{{ cartitem.quantity }}</span>
+                                                    </td>
+                                                    <?php ?>
+                                                    <td class="a-right">
+                                                        <span class="cart-price">
+                                                            <span class="price">${{ cartitem.price*cartitem.quantity }}</span>
+                                                        </span>
+                                                    </td>
+
+                                                </tr>
+                                {% endfor %}
+                                            </tbody>
+                                        </table>    
+                                        <div class="box-account box-recent">
+                                            <div class="box-head">
+                                                <h2>Order General Info</h2>
+                                            </div>
+                                            <table class="data-table" id="my-orders-table">
+                                                <col width="1" />
+                                                <col width="1" />
+                                                <col />
+                                                <col width="1" />
+                                                <col width="1" />
+                                                <col width="1" />
+                                                <thead>
+                                                    <tr class="first last">
+                                                        <th>Order #</th>
+                                                        <th>Date</th>
+                                                        <th>Ship To</th>
+                                                        <th>Shipping Method</th>
+                                                        <th><span class="nobr">Order Total</span></th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="first last odd">
+                                                        <td>{{ order.id }}</td>
+                                                        <td><span class="nobr">{{ order.date.date }}</span></td>
+                                                        <td>{{ order.shippingAddress.firstname }} {{ order.shippingAddress.lastname }}</td>
+                                                        <td>{{ order.shipping.name }}</td>
+                                                        <td><span class="price">{{ order.total }}</span></td>
+                                                        <td><em>{{ order.state.name }}</em></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <br>
+                                            <div class="box-head">
+                                                <h2>Billing & Shipping Addresses</h2>
+                                            </div>
+
+                                            <div class="col2-set">
+                                                <div class="box">
+
+                                                    <div class="box-content">
+                                                        <div class="col-1">
+                                                            <h4>Billing Address</h4>
+                                                            <address>
+                                                {{ order.billingaddress.firstname }} {{ order.billingaddress.lastname }}<br />
+                                                {{ order.billingaddress.address }}<br />
+                                                {{ order.billingaddress.city }}<br />
+                                                {{ order.billingaddress.country }}<br />
+                                                                </address>
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <h4>Shipping Address</h4>
+                                                                <address>
+                                                {{ order.shippingaddress.firstname }} {{ order.shippingaddress.lastname }}<br />
+                                                {{ order.shippingaddress.address }}<br />
+                                                {{ order.shippingaddress.city }}<br />
+                                                {{ order.shippingaddress.country }}<br />
+                                                                    </address>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="cart">
+                                                        <div class="cart-collaterals">
+                                                            <div class="totals">
+                                                                <table id="shopping-cart-totals-table">
+                                                                    <colgroup>
+                                                                        <col />
+                                                                        <col width="1" />
+                                                                    </colgroup>
+                                                                    <tfoot>
+                                                                        <tr>
+                                                                            <td style="" class="a-right" colspan="1">
+                                                                                <strong>SubTotal:</strong>
+                                                                            </td>
+                                                                            <td style="" class="a-right">
+                                                                                <strong><span class="price">$ {{ order.cart.total }}</span></strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style="" class="a-right" colspan="1">
+                                                                                <strong>Shipping Cost: </strong>
+                                                                            </td>
+                                                                            <td style="" class="a-right">
+                                                                                <strong><span class="price">${{ order.shipping.price }}</span></strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style="" class="a-right" colspan="1">
+                                                                                <strong>Grand Total:</strong>
+                                                                            </td>
+                                                                            <td style="" class="a-right">
+                                                                                <strong><span class="price">${{ order.total }}</span></strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tfoot>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="buttons-set" id="review-buttons-container">
+                                                    <p class="back-link"><a href="{{referrer}}" ><small>« </small>Back</a></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </li>
+                                        </ol>
+{% endblock %}
+{% block rightsidebar %}
+{% endblock %}

@@ -120,6 +120,12 @@ class Product {
      * @ORM\JoinColumn(name="image_id", referencedColumnName="id")
      * */
     private $image;
+    
+     /**
+     * @ORM\OneToMany(targetEntity="CartItems", mappedBy="productId")
+     */
+    private $cartitems;
+    
 
     /**
      * @Assert\File(maxSize = "1M",

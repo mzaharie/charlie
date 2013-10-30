@@ -3,12 +3,13 @@
 namespace Bookshop\BookshopBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * BookshopOrder
  *
  * @ORM\Table(name = "orders")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Bookshop\BookshopBundle\Entity\BookshopOrderRepository")
  */
 class BookshopOrder
 {
@@ -50,21 +51,22 @@ class BookshopOrder
     /**
      * @var string
      *
-     * @ORM\Column(name="cart", type="string", length=255)
+     * @ORM\OneToOne(targetEntity="Cart")
+     * @ORM\JoinColumn(name="cart_id", referencedColumnName="id")
      */
     private $cart;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="total", type="decimal")
+     * @ORM\Column(name="total", type="float")
      */
     private $total;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="date", type="datetime", nullable = true)
      */
     private $date;
 
@@ -76,7 +78,26 @@ class BookshopOrder
      * 
      */
     private $state;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\ManyToOne(targetEntity="ShippingMethod")
+     * @ORM\JoinColumn(name="shipping_id", referencedColumnName="id")
+     * 
+     * @Assert\NotBlank(message="user.name.not_blank", groups={"Shipping"})
+     * 
+     */
+    private $shipping;
+    
+    /**
+     * @var string
+     *
+     * @ORM\ManyToOne(targetEntity="PaymentMethod")
+     * @ORM\JoinColumn(name="payment_id", referencedColumnName="id")
+     * 
+     */
+    private $payment;
 
     
 
@@ -249,5 +270,51 @@ class BookshopOrder
     public function getState()
     {
         return $this->state;
+    }
+
+    /**
+     * Set shipping
+     *
+     * @param \Bookshop\BookshopBundle\Entity\ShippingMethod $shipping
+     * @return BookshopOrder
+     */
+    public function setShipping(\Bookshop\BookshopBundle\Entity\ShippingMethod $shipping = null)
+    {
+        $this->shipping = $shipping;
+    
+        return $this;
+    }
+
+    /**
+     * Get shipping
+     *
+     * @return \Bookshop\BookshopBundle\Entity\ShippingMethod 
+     */
+    public function getShipping()
+    {
+        return $this->shipping;
+    }
+
+    /**
+     * Set payment
+     *
+     * @param \Bookshop\BookshopBundle\Entity\PaymentMethod $payment
+     * @return BookshopOrder
+     */
+    public function setPayment(\Bookshop\BookshopBundle\Entity\PaymentMethod $payment = null)
+    {
+        $this->payment = $payment;
+    
+        return $this;
+    }
+
+    /**
+     * Get payment
+     *
+     * @return \Bookshop\BookshopBundle\Entity\PaymentMethod 
+     */
+    public function getPayment()
+    {
+        return $this->payment;
     }
 }

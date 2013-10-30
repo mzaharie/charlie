@@ -11,6 +11,8 @@ use Gedmo\Translatable\Translatable;
  *
  * @ORM\Table(name = "categories")
  * @ORM\Entity(repositoryClass="Bookshop\BookshopBundle\Entity\CategoryRepository")
+ * 
+ * @Gedmo\TranslationEntity(class="Bookshop\BookshopBundle\Entity\Translation\CategoryTranslation")
  */
 class Category implements Translatable
 {
@@ -115,7 +117,12 @@ class Category implements Translatable
     {
         $this->locale = $locale;
     }
-    
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+
     public function __toString() {
         return $this->name;
     }

@@ -1,0 +1,30 @@
+{% extends "BookshopBookshopBundle::layout.html.twig" %}
+
+{% block collyout %} 
+<div class="main-container col2-right-layout">
+    <div class="main">
+        <div class="col-main">
+            {% block body %}
+                <div class="page-title">
+                    <h1>Checkout</h1>
+                </div>
+                <ol class="opc" id="checkoutSteps">
+                    <li id="opc-billing" class="section slide2 allow active">
+                        <div class="step-title">
+                            <span class="number">1</span>
+                            <h2>Shipping Information</h2>
+                            <a href="#">Edit</a>
+                        </div>
+                        <div id="checkout-step-billing" class="step a-item">
+                            {% include 'BookshopBookshopBundle:Checkout:shippingForm.html.twig' with { 'form': form } %}
+
+                        </div>
+                    </li>
+                </ol>
+            </div>
+{% endblock %}
+            {% block leftsidebar %}{% endblock %}
+            {% block rightsidebar%}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

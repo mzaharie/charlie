@@ -1,0 +1,124 @@
+{% extends "BookshopBookshopBundle::layout.html.twig" %}
+
+
+{% block collayout %}
+<div class="main-container col2-right-layout">
+    <div class="main">
+        <div class="col-main">
+            {% block body %}
+                <div class="page-title">
+                    <h1>Checkout</h1>
+                </div>
+                <ol class="opc" id="checkoutSteps">
+                    <li id="opc-shipping_method" class="section slide4 allow active">
+                        <div class="step-title">
+                            <span class="number">5</span>
+                            <h2>Order Review</h2>
+                            <a href="#">Edit</a>
+                        </div>
+                        <div id="checkout-step-review" class="step a-item">
+                            <div class="order-review" id="checkout-review-load">
+                                <table class="data-table">
+                                <thead>
+                                <th>Product Name</th><th>Unit Price</th><th>Quantity</th><th>Subtotal</th>
+                                </thead>
+                                <tbody>
+                                        {% for ci in order.cart.cartitems %}
+                                        <tr class="<?php echo ($i % 2 == 0) ? 'odd' : 'even' ?>">
+                                            <td>{{ci.title}}</td>
+                                            <td>{{ci.price}}</td>
+                                            <td>{{ci.quantity}}</td>
+                                            <td>{{ci.price * ci.quantity}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                </tbody>
+                                </table>
+                                <br/>
+                            <table>
+                                <tr>
+                                    <td>Subtotal :</td>
+                                    <td>$ {{order.total-order.shipping.price}}</td>
+                                </tr>
+                                <tr><td>{{order.shipping.name}} : </td>
+                                    <td>$ {{order.shipping.price}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total: </td>
+                                    <td>$ {{order.total}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        {% set b_address = order.billingAddress %}
+                                        {% set s_address = order.shippingAddress %}
+                                        <br/>
+                                        <h3> Billing address: </h3>
+                                        <br/>
+                                        {{b_address.country}}
+                                        <br/>
+                                        {{b_address.city}}
+                                        <br/>
+                                        {{b_address.email}}
+                                        <br/>
+                                        {{b_address.firstName}} 
+                                        {{b_address.lastName}}
+                                        <br/>
+                                        {{b_address.address}}
+                                        <br/><br/>
+                                        {% if b_address.id != s_address.id %}
+                                            <h3> Shipping Address: </h3>
+                                            <br/>
+                                            {{s_address.country}}
+                                            <br/>
+                                            {{s_address.city}}
+                                            <br/>
+                                            {{s_address.email}}
+                                            <br/>
+                                            {{s_address.firstName}} 
+                                            {{s_address.lastName}}
+                                            <br/>
+                                            {{s_address.address}}
+                                        {% else %}
+                                            <h3>Shipping address:</h3>  The same as the billing address above.
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <br/>
+                                        <h3> Shipping method: </h3>
+                                        {{order.shipping.name}}
+                                        Price ${{order.shipping.price}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <br/>
+                                        <h3> Payment: </h3>
+                                        {{order.payment.name}}                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <br/>
+                                        <h3> State: </h3>
+                                        Your order is in '{{order.state.name}}' state.
+                                    </td>
+                                </tr>
+                            </table>
+                            <br/>
+                            <br/>
+                            </div>
+
+                            <div class="buttons-set" id="payment-buttons-container">
+                                <a href="{{path('cancel')}}"><button type="button" class="button"><span><span>Cancel</span></span></button></a>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            {% endblock %}
+            </div>
+        {% block leftsidebar %}{% endblock %}
+        {% block rightsidebar%}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

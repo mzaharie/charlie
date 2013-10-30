@@ -17,7 +17,7 @@
                     <div class="header">
                         <div class="quick-access">
                             {{ locale_switcher() }}
-                            <form id="search_mini_form" action="product_list.html" method="get">
+                            <form id="search_mini_form" action="{{path('search')}}" method="get">
                                 <div class="form-search">
                                     <label for="search">Search:</label>
                                     <input id="search" type="text" name="q" value="" class="input-text" maxlength="128" />
@@ -25,27 +25,34 @@
                                 </div>
                             </form>
 
-                            <p class="welcome-msg">logged in as <strong>{{ app.user ? app.user.username : 'Anonymous' }}</strong></p>
+                            <p class="welcome-msg">Hello <strong>{{ app.user ? app.user.firstname: 'Anonymous' }}</strong></p>
                             {{ knp_menu_render('BookshopBookshopBundle:Builder:linksMenu', {'template': 'BookshopBookshopBundle:Menu:links_menu.html.twig'}) }}
                         </div>
                     </div>
                 </div>
-
-                {% block navigation%}
-                    <div class="nav-container">
+            {% block navigation %}
+                <div class="nav-container">
                     {{ knp_menu_render('BookshopBookshopBundle:Builder:mainMenu', {'template': 'BookshopBookshopBundle:Menu:knp_menu.html.twig'}) }}
                     </div>
-                {% endblock%}
-                    
-                {% block collayout %}
-                <div class="main-container col3-layout">
-                    <div class="main">
-                        {% block body%} {% endblock %}
+            {% endblock%}
+            {% block collayout %}
+                    <div class="main-container col3-layout">
+                        <div class="main">
 
-                                
+                            {% block body%}
+                            {% endblock%}
+                            {% block leftsidebar%}
+                            <div class="col-left sidebar"></div>
+                            {%endblock%}
+                        </div>
+                            {%block rightsidebar%}
+                        <div class="col-right sidebar">
+                                        {{ render(controller('BookshopBookshopBundle:Cart:index')) }}
                             </div>
+                            {%endblock rightsidebar%}
                         </div>
                 {% endblock %}
+                {% block footer %}
                         <div class="footer-container">
                             <div class="footer">
                                 <ul>
@@ -62,6 +69,7 @@
                                 </ul>
                             </div>
                         </div>
+                {% endblock %}
                     </div>
                 </div>
             </body>

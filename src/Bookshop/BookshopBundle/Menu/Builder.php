@@ -13,16 +13,25 @@ class Builder extends ContainerAware {
 
         $securityContext = $this->container->get('security.context');
 
+        $menu->addChild('Home', array(
+            'route' => 'bookshop_bookshop_homepage'
+        ));
+
+
+
         if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             // authenticated REMEMBERED, FULLY will imply REMEMBERED (NON anonymous)
             $myAccountTrans = $myTrans->trans('menu.my.account', array(), 'BookshopBundle');
             $menu->addChild($myAccountTrans, array(
                 'route' => 'dashboard_index'
             ));
+            $menu->addChild('Checkout', array(
+                'route' => 'checkout'
+            ));
 
             $myCartTrans = $myTrans->trans('menu.my.cart', array(), 'BookshopBundle');
             $menu->addChild($myCartTrans, array(
-                'route' => 'bookshop_bookshop_homepage'
+                'route' => 'mycart'
             ));
 
             $logoutTrans = $myTrans->trans('layout.logout', array(), 'FOSUserBundle');
@@ -40,6 +49,19 @@ class Builder extends ContainerAware {
 //            $menu->addChild("Item With Childs", array('route' => '_welcome'));
 //            $menu['Item With Childs']->addChild('first Cild', array('route' => '_welcome'));
 //            $menu['Item With Childs']->addChild('second Cild', array('route' => '_welcome'));
+            $menu->addChild('Checkout', array(
+                'route' => 'checkout'
+            ));
+
+            $myCartTrans = $myTrans->trans('menu.my.cart', array(), 'BookshopBundle');
+            $menu->addChild($myCartTrans, array(
+                'route' => 'mycart'
+            ));
+
+//            $rstPassTrans = $myTrans->trans('menu.forgot_pass', array(), 'BookshopBundle');
+//            $menu->addChild($rstPassTrans, array('route' => 'fos_user_resetting_request'));
+//            $registerTrans = $myTrans->trans('menu.register', array(), 'BookshopBundle');
+//            $menu->addChild($registerTrans, array('route' => 'fos_user_registration_register'));
         }
         return $menu;
     }
@@ -51,6 +73,10 @@ class Builder extends ContainerAware {
 
         $menu = $factory->createItem('root');
         foreach ($categs as $categ) {
+//            $categ->setTranslatableLocale('ro');    
+//            $em->refresh($categ);
+//            var_dump($categ->getLocale());
+//            $categ->setTranslatableLocale('ro');
             $menu->addChild($categ->getName(), array(
                 'route' => 'category',
                 'routeParameters' => array('id' => $categ->getID())));
@@ -73,7 +99,7 @@ class Builder extends ContainerAware {
         ));
         $myOrdersTrans = $myTrans->trans('menu.dashboard.account_orders', array(), 'BookshopBundle');
         $menu->addChild($myOrdersTrans, array(
-            'route' => 'dashboard_index'  // not existing feature
+            'route' => 'dashboard_orders'  // not existing feature
         ));
         $billingTrans = $myTrans->trans('menu.dashboard.address.billing', array(), 'BookshopBundle');
         $menu->addChild($billingTrans, array(

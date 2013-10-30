@@ -1,0 +1,106 @@
+<form id="co-billing-form" action="{{ path('shipping') }}" method="POST">
+    <fieldset>
+        <ul class="form-list">
+            <li id="billing-new-address-form">
+                <fieldset>
+                    <ul>
+                        <li class="fields">
+                            <div class="customer-name">
+                                <div class="field name-firstname">
+                                    <label class="required"><em>*</em>First Name</label>
+                                    <div class="input-box">
+                                        {% set firstNClass = '' %}
+                                        {% if form_errors(form.firstName) %} 
+                                            {% set firstNClass = firstNClass~'validation-failed ' %}
+                                        {% endif %}
+                                        {{ form_widget(form.firstName, {'attr': {'class': firstNClass~'input-text required-entry'} }) }}
+                                        {% if form_errors(form.firstName) %}
+                                            <div class="validation-advice" id="advice-required-entry-email" style="">{{ form_errors(form.firstName) }}</div>
+                                        {% endif %}   
+                                    </div>
+                                </div>
+                                <div class="field name-lastname">
+                                    <label for="billing:lastname" class="required"><em>*</em>Last Name</label>
+                                    <div class="input-box">
+                                        {% set lastNClass = '' %}
+                                        {% if form_errors(form.lastName) %} 
+                                            {% set lastNClass = lastNClass~'validation-failed ' %}
+                                        {% endif %}
+                                        {{ form_widget(form.lastName, {'attr': {'class': lastNClass~'input-text required-entry'} }) }}
+                                        {% if form_errors(form.lastName) %}
+                                        <div class="validation-advice" id="advice-required-entry-email" style="">{{ form_errors(form.lastName) }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="fields">
+                            <div class="field">
+                                <label for="billing:email" class="required"><em>*</em>Email Address</label>
+                                <div class="input-box">
+                                    {% set emailClass = '' %}
+                                    {% if form_errors(form.email) %} 
+                                        {% set emailClass = emailClass~'validation-failed ' %}
+                                    {% endif %}
+                                    {{ form_widget(form.email, {'attr': {'class': emailClass~'input-text required-entry'} }) }}
+                                    {% if form_errors(form.email) %}
+                                        <div class="validation-advice" id="advice-required-entry-email" style="">{{ form_errors(form.email) }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
+                        <li class="wide">
+                            <label for="billing:street1" class="required"><em>*</em>Address</label>
+                            <div class="input-box">
+                                {% set addressClass = '' %}
+                                {% if form_errors(form.address) %} 
+                                    {% set addressClass = addressClass~'validation-failed ' %}
+                                {% endif %}
+                                {{ form_widget(form.address, {'attr': {'class': addressClass~'input-text required-entry'} }) }}
+                                {% if form_errors(form.address) %}
+                                        <div class="validation-advice" id="advice-required-entry-address" style="">{{ form_errors(form.address) }}</div>
+                                {% endif %}
+                            </div>
+                        </li>
+                        <li class="fields">
+                            <div class="field">
+                                <label for="billing:city" class="required"><em>*</em>City</label>
+                                <div class="input-box">
+                                    {% set cityClass = '' %}
+                                    {% if form_errors(form.city) %} 
+                                        {% set cityClass = cityClass~'validation-failed ' %}
+                                    {% endif %}
+                                    {{ form_widget(form.city, {'attr': {'class': cityClass~'input-text required-entry'} }) }}
+                                    {% if form_errors(form.city) %}
+                                                <div class="validation-advice" id="advice-required-entry-city" style="">{{ form_errors(form.city) }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="billing:country_id" class="required"><em>*</em>Country</label>
+                                <div class="input-box">
+                                    {% set countryClass = '' %}
+                                    {% if form_errors(form.country) %} 
+                                        {% set countryClass = countryClass~'validation-failed ' %}
+                                    {% endif %}
+                                    {{ form_widget(form.country, {'attr': {'class': countryClass~'input-text required-entry'} }) }}
+                                    {% if form_errors(form.country) %}
+                                                    <div class="validation-advice" id="advice-required-entry-country" style="">{{ form_errors(form.country) }}</div>
+                                    {% endif %}
+                                    </div>
+                            </div>
+                        </li>
+                        <li class="no-display"><input name="billing[save_in_address_book]" value="1" type="hidden"></li>
+                    </ul>
+                </fieldset>
+            </li>
+            {{ form_rest(form) }}
+        </ul>
+        <div class="buttons-set" id="billing-buttons-container">
+            <p class="required">* Required Fields</p>
+            <button type="submit" title="Continue" class="button"><span><span>Continue</span></span></button>
+            <a href="{{path("billing")}}" style="float:left" >Back</a>
+        </div>
+    </fieldset>
+</form>

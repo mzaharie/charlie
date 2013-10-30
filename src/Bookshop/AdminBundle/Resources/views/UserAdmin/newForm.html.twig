@@ -1,0 +1,102 @@
+<table border="0" width="100%" cellpadding="0" cellspacing="0" id="content-table">
+    <tr>
+        <th rowspan="3" class="sized"><img src="{{ asset('bundles/bookshopadmin/images/shared/side_shadowleft.jpg') }}" width="20" height="300" alt="" /></th>
+        <th class="topleft"></th>
+        <td id="tbl-border-top">&nbsp;</td>
+        <th class="topright"></th>
+        <th rowspan="3" class="sized"><img src="{{ asset('bundles/bookshopadmin/images/shared/side_shadowright.jpg') }}" width="20" height="300" alt="" /></th>
+    </tr>
+    <tr>
+        <td id="tbl-border-left"></td>
+        <td>
+            <!--  start content-table-inner -->
+            <div id="content-table-inner">
+
+                <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                    <tr valign="top">
+                        <td>
+                            <!-- start id-form -->
+                            <form action="{{ path('bookshop_admin_user_new') }}" method=POST>
+                            <table border="0" cellpadding="0" cellspacing="0"  id="id-form">
+                                <tr>
+                                    <th valign="top">Username:</th>
+                                    <td>{{ form_widget(form.username, {'attr': {'class': 'inp-form'} }) }}</td>
+                                    <td>
+                                        {% if form_errors(form.username) %}
+                                        <div class="error-left"></div>
+                                        <div class="error-inner">{{ form_errors(form.username) }}</div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">First Name:</th>
+                                    <td>{{ form_widget(form.first_name, {'attr': {'class': 'inp-form'} }) }}</td>
+                                    <td>
+                                        {% if form_errors(form.first_name) %}
+                                        <div class="error-left"></div>
+                                        <div class="error-inner">{{ form_errors(form.first_name) }}</div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Last Name:</th>
+                                    <td>{{ form_widget(form.last_name, {'attr': {'class': 'inp-form'} }) }}</td>
+                                    <td>
+                                        {% if form_errors(form.last_name) %}
+                                        <div class="error-left"></div>
+                                        <div class="error-inner">{{ form_errors(form.last_name) }}</div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Email:</th>
+                                    <td>{{ form_widget(form.email, {'attr': {'class': 'inp-form'} }) }}</td>
+                                    <td>
+                                        {% if form_errors(form.email) %}
+                                        <div class="error-left"></div>
+                                        <div class="error-inner">{{ form_errors(form.email) }}</div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Mobile:</th>
+                                    <td>{{ form_widget(form.mobile, {'attr': {'class': 'inp-form'} }) }}</td>
+                                    <td>
+                                        {% if form_errors(form.mobile) %}
+                                        <div class="error-left"></div>
+                                        <div class="error-inner">{{ form_errors(form.mobile) }}</div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {{ form_rest(form) }}
+
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <td valign="top">
+                                        <input type="submit" value="" class="form-submit" />
+                                        <input type="reset" value="" class="form-reset"  />
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                            </form>
+                            <!-- end id-form  -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><img src="{{ asset('bundles/bookshopadmin/images/shared/blank.gif') }}" width="695" height="1" alt="blank" /></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <div class="clear"></div>
+            </div>
+            <!--  end content-table-inner  -->
+        </td>
+        <td id="tbl-border-right"></td>
+    </tr>
+    <tr>
+        <th class="sized bottomleft"></th>
+        <td id="tbl-border-bottom">&nbsp;</td>
+        <th class="sized bottomright"></th>
+    </tr>
+</table>

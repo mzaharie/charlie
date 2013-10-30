@@ -1,0 +1,8 @@
+{% extends "BookshopBookshopBundle::layout.html.twig"%}
+{% block leftsidebar %}{% endblock %}
+{% block body %}
+<div class="error-msg"> <div style="font-size: 20px">Your cart is empty! Please insert something into your cart</div></div>
+<meta http-equiv="refresh" content="4;url={{path('bookshop_bookshop_homepage')}}">
+{% endblock %}
+
+{% block rightsidebar %}{% endblock %}

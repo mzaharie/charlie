@@ -59,7 +59,7 @@
         {% if pageCount > (endPage + 1) %}
             {% if pageCount > (endPage + 2) %}
             <li class="disabled">
-                <span>&hellip;</span>
+                <span> &hellip; </span>
             </li>
             {% else %}
             <li>
@@ -68,7 +68,7 @@
             {% endif %}
         {% endif %}
             <li>
-                <a href="{{ path(route, query|merge({(pageParameterName): pageCount})) }}">{{ pageCount }}</a>
+                <a href="{{ path(route, query|merge({(pageParameterName): pageCount})) }}"> {{ pageCount }}</a>
             </li>
     {% endif %}
 

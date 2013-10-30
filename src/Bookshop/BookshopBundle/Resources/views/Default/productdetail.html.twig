@@ -22,20 +22,28 @@
 
 
 
-{#   <div id="messages_product_view">
-        <ul class="messages">
-            <li class="success-msg">
-                <ul>
-                    <li><span>Ottoman was added to your shopping cart.</span></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-#}
+{% for flashMessage in app.session.flashbag.get('success') %}
+    <ul class="messages">
+        <li class="success-msg">
+            <ul>
+                <div>{{ flashMessage }}</div>
+            </ul>
+        </li>
+    </ul>
+{% endfor %}
+{% for flashMessage1 in app.session.flashbag.get('error') %}
+    <ul class="messages">
+        <li class="error-msg">
+            <ul>
+                <div>{{ flashMessage1 }}</div>
+            </ul>
+        </li>
+    </ul>
+{% endfor %}
         <div class="col-main">
             <div class="product-view">
                 <div class="product-essential">
-                    <form action="" method="post" id="product_addtocart_form">
+                    <form action="{{path ('addproduct')}}" method="post" id="product_addtocart_form">
                         <div class="product-shop">
                             <div class="product-name">
                                 <h1>{{ product.title }}</h1>
@@ -54,8 +62,9 @@
                             <div class="add-to-box">
                                 <div class="add-to-cart">
                                     <label for="qty">Qty:</label>
-                                    <input type="text" name="qty" id="qty" maxlength="12" value="1" title="Qty" class="input-text qty" />
-                                    <button type="button" title="Add to Cart" class="button btn-cart" ><span><span>Add to Cart</span></span></button>
+                                    <input type="text" name="quantity" id="qty" maxlength="12" value="1" title="Qty" class="input-text qty" />
+                                    <input type="hidden" name="productid" value="{{product.id}}">
+                                    <button type="submit" title="Add to Cart" class="button btn-cart" ><span><span>Add to Cart</span></span></button>
                                 </div>
                             </div>
                             {% else %}
@@ -111,22 +120,11 @@
                     </div>
                 </div>
         {% endblock %}
-        {% block cart %}
-                <div class="col-right sidebar">
-                                    {%block rightsidebar%}
-                        <div class="block block-cart">
-                            <div class="block-title">
-                                <strong><span>My Cart</span></strong>
-                            </div>
-                            <div class="block-content">
-                                <p class="empty">You have no items in your shopping cart.</p>
-                            </div>
-                        </div>
-        {%endblock%}
+                                    {% block rightsidebar %}
+                {{ parent() }}
+            {% endblock %}
 
-                    </div>
-  {% endblock %}
-                </div>
             </div>
+        </div>
 {% endblock %}
 

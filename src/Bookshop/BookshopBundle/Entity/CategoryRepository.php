@@ -17,7 +17,7 @@ class CategoryRepository extends EntityRepository
                 ->select('c')->where('c.id = :categ_id')
                 ->setParameter('categ_id', $id);
         
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getSingleResult();
     }
             
     

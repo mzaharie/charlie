@@ -18,13 +18,13 @@
                              {% else %} 100,00 US$ and above {% endif %}
                                 </span>
                                 <a class="btn-remove" href="
-                                       {% set arr = ({'id':category.id}) %}
+                                       {% set arr = ({}) %}
                                        {% for request,value in app.request.query.all %}
                                             {% if (request)!='pricerange' %}
                                                 {% set arr = arr|merge({(request): value}) %} 
                                             {% endif %}
                                         {%endfor%}
-                                        {% set parameters = category.id ~ '?' %}
+                                        {% set parameters = '?' %}
                                         {% for request, value in arr %} 
                                             {% if not loop.last %}
                                                 {% set parameters = parameters ~(request)~'='~value~'&' %}
@@ -40,13 +40,13 @@
                                 <li>
                                     <span class="label">Stock:</span> <span class="value"> {%if 'stock=1' in app.request.requesturi %} Available {% else %} Soon {% endif %} </span>
                                     <a class="btn-remove" href="
-                                       {% set arr = ({'id':category.id}) %}
+                                       {% set arr = ({}) %}
                                        {% for request,value in app.request.query.all %}
                                             {% if (request)!='stock' %}
                                                 {% set arr = arr|merge({(request): value}) %} 
                                             {% endif %}
                                         {%endfor%}
-                                        {% set parameters = category.id ~ '?' %}
+                                        {% set parameters = '?' %}
                                         {% for request, value in arr %} 
                                             {% if not loop.last %}
                                                 {% set parameters = parameters ~(request)~'='~value~'&' %}
@@ -62,13 +62,13 @@
                             </div>
                 {% if ('pricerange' in app.request.requesturi) or ('stock' in app.request.requesturi) %}
                             <div class="actions"><a href="
-                            {% set arr = ({'id':category.id}) %}
+                            {% set arr = ({}) %}
                             {% for request,value in app.request.query.all %}
                                 {% if (request)!='pricerange' and (request)!='stock' %}
                                     {% set arr = arr|merge({(request): value}) %} 
                                 {% endif %}
                             {%endfor%}
-                            {% set parameters = category.id ~ '?' %}
+                            {% set parameters = '?' %}
                             {% for request, value in arr %} 
                                 {% if not loop.last %}
                                     {% set parameters = parameters ~(request)~'='~value~'&' %}
@@ -85,169 +85,281 @@
                                     <dt>Price</dt>
                                     <dd>
                                         <ol>
-                                            <li><a href="{{ path(app.request.attributes.get('_route'),app.request.query.all|merge({'id':category.id,'pricerange': '1'}))}}"><span class="price">0,00 US$</span> - <span class="price">49,99 US$</span></a></li>
-                                            <li><a href="{{ path(app.request.attributes.get('_route'),app.request.query.all|merge({'id':category.id,'pricerange': '2'}))}}"><span class="price">50,00 US$</span> - <span class="price">99,99 US$</span></a></li>
-                                            <li><a href="{{ path(app.request.attributes.get('_route'),app.request.query.all|merge({'id':category.id,'pricerange': '3'}))}}"><span class="price">100,00 US$</span> and above</a></li>
-                                        </ol>
-                                    </dd>
+                                            <li><a href="
+                                            {% set arr = ({}) %}
+                                            {% for request,value in app.request.query.all %}
+                                                {% set arr = arr|merge({(request): value}) %} 
+                                            {%endfor%}
+                                            {% set arr = arr|merge({'page':'1','pricerange':'1'}) %}
+                                            {% set parameters = '?' %}
+                                            {% for request, value in arr %} 
+                                                {% if not loop.last %}
+                                                    {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                                {%else%}
+                                                    {% set parameters = parameters ~(request)~'='~value %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {{parameters}}
+                                                   "><span class="price">0,00 US$</span> - <span class="price">49,99 US$</span></a></li>
+                                                   <li><a href="
+                                            {% set arr = ({}) %}
+                                            {% for request,value in app.request.query.all %}
+                                                    {% set arr = arr|merge({(request): value}) %} 
+                                            {%endfor%}
+                                            {% set arr = arr|merge({'page':'1','pricerange':'2'}) %}
+                                            {% set parameters = '?' %}
+                                            {% for request, value in arr %} 
+                                                {% if not loop.last %}
+                                                    {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                                {%else%}
+                                                    {% set parameters = parameters ~(request)~'='~value %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {{parameters}}
+                                                          "><span class="price">50,00 US$</span> - <span class="price">99,99 US$</span></a></li>
+                                                          <li><a href="
+                                            {% set arr = ({}) %}
+                                            {% for request,value in app.request.query.all %}
+                                                    {% set arr = arr|merge({(request): value}) %} 
+                                            {%endfor%}
+                                            {% set arr = arr|merge({'page':'1','pricerange':'3'}) %}
+                                            {% set parameters = '?' %}
+                                            {% for request, value in arr %} 
+                                                {% if not loop.last %}
+                                                    {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                                {%else%}
+                                                    {% set parameters = parameters ~(request)~'='~value %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {{parameters}}
+                                                                 "><span class="price">100,00 US$</span> and above</a></li>
+                                                              </ol>
+                                                          </dd>
                     {% endif %}
                     {% if not('stock' in app.request.requesturi) %}
-                                    <dt>Stock</dt>
-                                    <dd>
-                                        <ol>
-                                            <li><a href="{{ path(app.request.attributes.get('_route'),app.request.query.all|merge({'id':category.id,'stock': '1'}))}}">Available</a></li>
-                                            <li><a href="{{ path(app.request.attributes.get('_route'),app.request.query.all|merge({'id':category.id,'stock': '0'}))}}">Soon</a></li>
-                                        </ol>
-                                    </dd>
+                                                          <dt>Stock</dt>
+                                                          <dd>
+                                                              <ol>
+                                                                  <li><a href="
+                                            {% set arr = ({}) %}
+                                            {% for request,value in app.request.query.all %}
+                                                    {% set arr = arr|merge({(request): value}) %} 
+                                            {%endfor%}
+                                            {% set arr = arr|merge({'page':'1','stock':'1'}) %}
+                                            {% set parameters = '?' %}
+                                            {% for request, value in arr %} 
+                                                {% if not loop.last %}
+                                                    {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                                {%else%}
+                                                    {% set parameters = parameters ~(request)~'='~value %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {{parameters}}
+                                                                         ">Available</a></li>
+                                                                         <li><a href="
+                                            {% set arr = ({}) %}
+                                            {% for request,value in app.request.query.all %}
+                                                    {% set arr = arr|merge({(request): value}) %} 
+                                            {%endfor%}
+                                            {% set arr = arr|merge({'page':'1','stock':'0'}) %}
+                                            {% set parameters = '?' %}
+                                            {% for request, value in arr %} 
+                                                {% if not loop.last %}
+                                                    {% set parameters = parameters ~(request)~'='~value~'&' %}
+                                                {%else%}
+                                                    {% set parameters = parameters ~(request)~'='~value %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {{parameters}}
+                                                                                ">Soon</a></li>
+                                                                             </ol>
+                                                                         </dd>
                     {% endif %}
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
+                                                                      </dl>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
 
 {% endblock%}
 {% block body%}
-                    <div class="breadcrumbs">
-                        <ul>
-                            <li class="home">
-                                <a href="{{ path('bookshop_bookshop_homepage') }}" title="Go to Home Page">Home</a>
-                                <span>/ </span>
-                            </li>
-                            <li class="category35">
-                                <strong>{{category.name}}</strong>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-main">
-                        <div class="page-title category-title">
-                            <h1>{{category.name}}</h1>
-                        </div>
 
-                        <div class="category-products">
-                            <div class="toolbar">
-                                <div class="pager">
-                                    <p class="amount">
-                                        <strong>{{ products.getTotalItemCount }} Products</strong>
-                                    </p>
+{% for flashMessage in app.session.flashbag.get('success') %}
+    <ul class="messages">
+        <li class="success-msg">
+            <ul>
+                <div>{{ flashMessage }}</div>
+            </ul>
+        </li>
+    </ul>
+{% endfor %}
+{% for flashMessage1 in app.session.flashbag.get('error') %}
+    <ul class="messages">
+        <li class="error-msg">
+            <ul>
+                <div>{{ flashMessage1 }}</div>
+            </ul>
+        </li>
+    </ul>
+{% endfor %}
+                                                          <div class="breadcrumbs">
+                                                              <ul>
+                                                                  <li class="home">
+                                                                      <a href="{{ path('bookshop_bookshop_homepage') }}" title="Go to Home Page">Home</a>
+                                                                      <span>/ </span>
+                                                                  </li>
+                                                                  <li class="category35">
+                                                                      <strong>{{category.name}}</strong>
+                                                                  </li>
+                                                              </ul>
+                                                          </div>
+                                                          <div class="col-main">
+                                                              <div class="page-title category-title">
+                                                                  <h1>{{category.name}}</h1>
+                                                              </div>
+
+                                                              <div class="category-products">
+                                                                  <div class="toolbar">
+                                                                      <div class="pager">
+                                                                          <p class="amount">
+                                                                              <strong>{{ products.getTotalItemCount }} Products</strong>
+                                                                          </p>
                     {{ knp_pagination_render(products) }}
-                                </div>
-                                <div class="sorter">
-                                    <div class="sort-by">
-                                        <label>Sort By</label>
-                                        <label {% if products.isSorted('a.title') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(products, 'Title'|trans({},'AcmeDemoBundle'), 'a.title') }}</label>
-                                        <label {% if products.isSorted('a.price') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(products, 'Price'|trans({},'AcmeDemoBundle'), 'a.price') }}</label>
-                                    </div>
+                                                                      </div>
+                                                                      <div class="sorter">
+                                                                          <div class="sort-by">
+                                                                              <label>Sort By</label>
+                                                                              <label {% if products.isSorted('a.title') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(products, 'Title'|trans({},'AcmeDemoBundle'), 'a.title') }}</label>
+                                                                              <label {% if products.isSorted('a.price') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(products, 'Price'|trans({},'AcmeDemoBundle'), 'a.price') }}</label>
+                                                                          </div>
                    {% if products.isSorted('a.title') %} <label>Sorted by Title {% if products.params.direction  == 'asc' %} Ascendent {% else %} Descendent {% endif %}</label>{% endif %}
                    {% if products.isSorted('a.price') %} <label>Sorted by Price {% if products.params.direction  == 'asc' %} Ascendent {% else %} Descendent {% endif %}</label>{% endif %}
-                                </div>
-                            </div>
+                                                                      </div>
+                                                                  </div>
             {% for product in  products %}
                 {% if loop.index % 3 == 1 %}
-                            <ul class="products-grid">
-                                <li class="item first">
-                                    <a href="{{path('product',{'id':product.id})}}" title="{{product.title}}" class="product-image">
-                                        <img src="{%if product.image!=null%}{{asset([product.image.path,product.image.filename]|join)}}{%endif%}"
-                                             width="135" height="135" alt="{{product.title}}" />
-                                    </a>
-                                    <h2 class="product-name"><a href="{{path('product',{'id':product.id})}}" title="{{product.title}}">{{product.title}}</a></h2>
-                                    <div class="price-box">
-                                        <span class="regular-price" id="product-price-168">
-                                            <span class="price">{{product.price}} US$</span>
-                                        </span>
-                                    </div>
+
+                                                                  <ul class="products-grid">
+                                                                      <li class="item first">
+                                                                          <a href="{{path('product',{'id':product.id})}}" title="{{product.title}}" class="product-image">
+                                                                              <img src="{%if product.image!=null%}{{asset([product.image.path,product.image.filename]|join)}}{%endif%}"
+                                                                                   width="135" height="135" alt="{{product.title}}" />
+                                                                          </a>
+                                                                          <h2 class="product-name"><a href="{{path('product',{'id':product.id})}}" title="{{product.title}}">{{product.title}}</a></h2>
+                                                                          <div class="price-box">
+                                                                              <span class="regular-price" id="product-price-168">
+                                                                                  <span class="price">{{product.price}} US$</span>
+                                                                              </span>
+                                                                          </div>
                     {%if product.stock>0%}
-                                    <div class="actions">
-                                        <button type="button" title="Add to Cart" class="button btn-cart" >
-                                            <span><span>Add to Cart</span></span>
-                                        </button>
-                                    </div>
+                                                                          <div class="actions">
+                                                                              <form action="{{path('addproduct')}}" method="post">
+                                                                                  <input type="hidden" name="quantity" value="1">
+                                                                                  <input type="hidden" name="productid" value="{{product.id}}">
+                                                                                  <button type="submit" title="Add to Cart" class="button btn-cart" >
+                                                                                      <span><span>Add to Cart</span></span>
+                                                                                  </button>
+                                                                              </form>
+                                                                          </div>
                     {% else %}
-                                    <div class="actions">
-                                        <span class="regular-price"><span>Product not in stock</span></span>
-                                    </div>
+                                                                          <div class="actions">
+                                                                              <span class="regular-price"><span>Product not in stock</span></span>
+                                                                          </div>
                     {%endif%}
-                                </li>
+                                                                      </li>
                 {% endif %}
                 {% if loop.index % 3 == 2 %}
-                                <li class="item">
-                                    <a href="{{path('product',{'id':product.id})}}" title=" {{product.title}}" class="product-image">
-                                        <img src="{%if product.image!=null%}{{asset([product.image.path,product.image.filename]|join)}}{%endif%}" width="135" height="135" alt=" {{product.title}}" />
-                                    </a>
 
-                                    <h2 class="product-name">
-                                        <a href="{{path('product',{'id':product.id})}}" title=" {{product.title}}"> {{product.title}}</a>
-                                    </h2>
+                                                                      <li class="item">
+                                                                          <a href="{{path('product',{'id':product.id})}}" title=" {{product.title}}" class="product-image">
+                                                                              
+                                                                              <img src="{%if product.image!=null%}{{asset([product.image.path,product.image.filename]|join)}}{%endif%}"
+                                                                                   width="135" height="135" alt="{{product.title}}" />
+                                                                          </a>
 
-                                    <div class="price-box">
-                                        <span class="regular-price" id="product-price-170">
-                                            <span class="price">{{product.price}} US$</span>
-                                        </span>
-                                    </div>
+                                                                          <h2 class="product-name">
+                                                                              <a href="{{path('product',{'id':product.id})}}" title=" {{product.title}}"> {{product.title}}</a>
+                                                                          </h2>
+
+                                                                          <div class="price-box">
+                                                                              <span class="regular-price" id="product-price-170">
+                                                                                  <span class="price">{{product.price}} US$</span>
+                                                                              </span>
+                                                                          </div>
 
                    {%if product.stock>0%}
-                                    <div class="actions">
-                                        <button type="button" title="Add to Cart" class="button btn-cart" >
-                                            <span><span>Add to Cart</span></span>
-                                        </button>
-                                    </div>
+                                                                          <div class="actions">
+                                                                              <form action="{{path('addproduct')}}" method="post">
+                                                                                  <input type="hidden" name="quantity" value="1">
+                                                                                  <input type="hidden" name="productid" value="{{product.id}}">
+                                                                                  <button type="submit" title="Add to Cart" class="button btn-cart" >
+                                                                                      <span><span>Add to Cart</span></span>
+                                                                                  </button>
+                                                                              </form>
+                                                                          </div>
                     {% else %}
-                                    <div class="actions">
-                                        <span class="regular-price"><span>Product not in stock</span></span>
-                                    </div>
+                                                                          <div class="actions">
+                                                                              <span class="regular-price"><span>Product not in stock</span></span>
+                                                                          </div>
                     {%endif%}
-                                </li>
+                                                                      </li>
                {% endif %}
                {% if loop.index % 3 == 0 %}
-                                <li class="item">
-                                    <a href="{{path('product',{'id':product.id})}}" title="{{product.title}}" class="product-image">
-                                        <img src="{%if product.image!=null%}{{asset([product.image.path,product.image.filename]|join)}}{%endif%}"" width="135" height="135" alt="{{product.title}}" />
-                                    </a>
 
-                                    <h2 class="product-name">
-                                        <a href="{{path('product',{'id':product.id})}}" title="{{product.title}}">{{product.title}}</a>
-                                    </h2>
+                                                                      <li class="item">
+                                                                          <a href="{{path('product',{'id':product.id})}}" title="{{product.title}}" class="product-image">
+                                                                              
+                                                                              <img src="{%if product.image!=null%}{{asset([product.image.path,product.image.filename]|join)}}{%endif%}"
+                                                                                   width="135" height="135" alt="{{product.title}}" />
+                                                                          </a>
+                                                                          <h2 class="product-name">
+                                                                              <a href="{{path('product',{'id':product.id})}}" title="{{product.title}}">{{product.title}}</a>
+                                                                          </h2>
 
-                                    <div class="price-box">
-                                        <span class="regular-price" id="product-price-170">
-                                            <span class="price">{{product.price}} US$</span>
-                                        </span>
-                                    </div>
+                                                                          <div class="price-box">
+                                                                              <span class="regular-price" id="product-price-170">
+                                                                                  <span class="price">{{product.price}} US$</span>
+                                                                              </span>
+                                                                          </div>
                     {%if product.stock>0%}
-                                    <div class="actions">
-                                        <button type="button" title="Add to Cart" class="button btn-cart" >
-                                            <span><span>Add to Cart</span></span>
-                                        </button>
-                                    </div>
+                                                                          <div class="actions">
+                                                                              <form action="{{path('addproduct')}}" method="post">
+                                                                                  <input type="hidden" name="quantity" value="1">
+                                                                                  <input type="hidden" name="productid" value="{{product.id}}">
+                                                                                  <button type="submit" title="Add to Cart" class="button btn-cart" >
+                                                                                      <span><span>Add to Cart</span></span>
+                                                                                  </button>
+                                                                              </form>
+                                                                          </div>
                     {% else %}
-                                    <div class="actions">
-                                        <span class="regular-price"><span>Product not in stock</span></span>
-                                    </div>
+                                                                          <div class="actions">
+                                                                              <span class="regular-price"><span>Product not in stock</span></span>
+                                                                          </div>
                     {%endif%}
-                                </li>
-                            </ul>    
+                                                                      </li>
+                                                                  </ul>    
             {% endif %}
             {% if loop.last%}
-                            </ul>    
+                                                                  </ul>    
             {% endif %}
         {% endfor %}
 
-                            <div class="toolbar-bottom">
-                                <div class="toolbar">
-                                    <div class="pager">
-                                        <p class="amount">
-                                            <strong>{{ products.getTotalItemCount }} Products</strong>
-                                        </p>
+                                                                  <div class="toolbar-bottom">
+                                                                      <div class="toolbar">
+                                                                          <div class="pager">
+                                                                              <p class="amount">
+                                                                                  <strong>{{ products.getTotalItemCount }} Products</strong>
+                                                                              </p>
                     {{ knp_pagination_render(products) }}
-                                    </div>
-                                    <div class="sorter">
-                                        <div class="sort-by">
-                                            <label>Sort By</label>
-                                            <label {% if products.isSorted('a.title') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(products, 'Title'|trans({},'AcmeDemoBundle'), 'a.title') }}</label>
-                                            <label {% if products.isSorted('a.price') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(products, 'Price'|trans({},'AcmeDemoBundle'), 'a.price') }}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                                                          </div>
+                                                                          <div class="sorter">
+                                                                              <div class="sort-by">
+                                                                                  <label>Sort By</label>
+                                                                                  <label {% if products.isSorted('a.title') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(products, 'Title'|trans({},'AcmeDemoBundle'), 'a.title') }}</label>
+                                                                                  <label {% if products.isSorted('a.price') %} class="sorted"{% endif %}> {{ knp_pagination_sortable(products, 'Price'|trans({},'AcmeDemoBundle'), 'a.price') }}</label>
+                                                                              </div>
+                                                                          </div>
+                                                                      </div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
 {%endblock%}

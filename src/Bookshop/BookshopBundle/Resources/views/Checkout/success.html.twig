@@ -1,0 +1,40 @@
+{% extends "BookshopBookshopBundle::layout.html.twig" %}
+
+
+{% block collayout %}
+<div class="main-container col2-right-layout">
+    <div class="main">
+        <div class="col-main">
+            {% block body %}
+                <div class="page-title">
+                    <h1>Checkout</h1>
+                </div>
+                <ol class="opc" id="checkoutSteps">
+                    <li id="opc-shipping_method" class="section slide4 allow active">
+                        <div class="step-title">
+                            <span class="number">6</span>
+                            <h2>Success </h2>
+                            <a href="#">Edit</a>
+                        </div>
+                        <div id="checkout-step-review" class="step a-item">
+                            <div class="order-review" id="checkout-review-load">
+                                
+                            Thank you for your purchase!</br>
+                            Your order number is {{"%1$08d"|format(order.id)}}</br>
+                            You will receive an order information email with details of your order and a link to track it's progress.
+                            </div>
+
+                            <div class="buttons-set" id="payment-buttons-container">
+                                
+                                <a href="{{path('bookshop_bookshop_homepage')}}"><button type="button" class="button"><span><span>Continue to store</span></span></button></a>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            {% endblock %}
+            </div>
+        {% block leftsidebar %}{% endblock %}
+        {% block rightsidebar%}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

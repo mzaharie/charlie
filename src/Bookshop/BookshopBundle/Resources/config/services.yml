@@ -2,6 +2,18 @@ parameters:
 #    bookshop_bookshop.example.class: Bookshop\BookshopBundle\Example
 
 services:
+    login_listener:
+        class: 'Bookshop\BookshopBundle\Listener\LoginListener'
+        arguments: ['@security.context', '@doctrine']
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login' }
+#  link_service.twig.extension:
+#    class: Bookshop\BookshopBundle\Twig\Extensions\LinkServiceExtension
+#    tags:
+#       - { name: twig.extension }
+#    bookshop_bookshop.example:
+#        class: %bookshop_bookshop.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
     bookshop_user.registration.form.type:
             class: Bookshop\BookshopBundle\Form\Type\RegistrationFormType
             arguments: [%fos_user.model.user.class%]

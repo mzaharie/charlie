@@ -1,4 +1,4 @@
-{% extends "BookshopBookshopBundle::layout.html.twig"  %}
+{% extends "BookshopBookshopBundle::layout3Cols.html.twig"  %}
 
 {% trans_default_domain 'FOSUserBundle' %}
 
@@ -9,3 +9,5 @@
         {% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>{% endif %}
     {% endif %}
 {% endblock fos_user_content %}
+{%block leftsidebar%}{% endblock %}
+{%block rightsidebar%}{% endblock %}

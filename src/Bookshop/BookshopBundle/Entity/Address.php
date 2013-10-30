@@ -75,13 +75,19 @@ class Address
      * @Assert\NotBlank(message="address.email.not_blank")
      *
      * @Assert\Regex(
-     *     pattern="/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/",
+     *     pattern="/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/",
      *     htmlPattern="*",
      *     match=true,
      *     message="address.email.not_valid"
      * )
      */
     private $email;
+    
+    /**
+     *
+     * @var boolean 
+     */
+    private $shipp_to_this;
 
 
     public function copy(Address $address){
@@ -240,7 +246,16 @@ class Address
         return $this->email;
     }
     
+    public function getShippToThis(){
+        return $this->shipp_to_this;
+    }
+    public function setShippToThis($shipp_to_this){
+        $this->shipp_to_this = $shipp_to_this;
+    }
+    
     public function __toString(){
         return $this->firstName." ".$this->lastName." ".$this->address." ".$this->email ;
     }
+    
+    
 }

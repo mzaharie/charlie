@@ -1,5 +1,5 @@
 bookshop_bookshop_homepage:
-    pattern:  /
+    pattern: /
     defaults: { _controller: BookshopBookshopBundle:Default:index }
     
 bookshop_bookhop_set_locale:
@@ -11,19 +11,91 @@ bookshop_bookhop_set_locale:
     
 category:
   pattern: category/{id}
-  defaults: { _controller: BookshopBookshopBundle:Category:category}
+  defaults: { _controller: BookshopBookshopBundle:Category:show}
   requirements:
-        _method:  GET
+        _method: GET
         id: \d+
 product:
   pattern: product/{id}
   defaults: { _controller: BookshopBookshopBundle:Product:product}
   requirements:
-        _method:  GET
+        _method: GET
         id: \d+
+search:
+  pattern: search/
+  defaults: { _controller: BookshopBookshopBundle:Search:search}
+  requirements:
+    _method: GET
+
+mycart:
+  pattern: mycart
+  defaults: { _controller: BookshopBookshopBundle:Cart:mycart}
+        
 cart:
   pattern: cart
   defaults: { _controller: BookshopBookshopBundle:Cart:index}
+
+updatecart:
+  pattern: updatecart/
+  defaults: { _controller: BookshopBookshopBundle:Cart:updatecart}
+  requirements:
+    method: post
+    
+
+emtpycart:
+  pattern: emptycart/{cartid}
+  defaults: { _controller: BookshopBookshopBundle:Cart:emptycart}
+  requirements:
+        _method: GET
+        id: \d+
+
+deleteproduct:
+  pattern: deleteproduct/{id}/{cartid}
+  defaults: { _controller: BookshopBookshopBundle:Cart:deleteproduct}
+  requirements:
+    _method: GET
+    id: \d+
+    cartid: \d+
+
+addproduct:
+  pattern: addproduct/
+  defaults: { _controller: BookshopBookshopBundle:Cart:addproduct}
+  requirements:
+        _method: post
+
+checkout:
+  pattern: checkout/index
+  defaults: { _controller: BookshopBookshopBundle:Checkout:index}
+
+billing:
+  pattern: checkout/billing
+  defaults: { _controller: BookshopBookshopBundle:Checkout:billing}
+
+shipping:
+  pattern: checkout/shipping
+  defaults: { _controller: BookshopBookshopBundle:Checkout:shipping}
+
+shipping_method:
+  pattern: checkout/shipping_method
+  defaults: { _controller: BookshopBookshopBundle:Checkout:shippingMethod}
+payment:
+  pattern: checkout/payment
+  defaults: { _controller: BookshopBookshopBundle:Checkout:payment}
+review:
+  pattern: checkout/review
+  defaults: { _controller: BookshopBookshopBundle:Checkout:review}
+cancel:
+  pattern: checkout/cancel
+  defaults: { _controller: BookshopBookshopBundle:Checkout:cancel}
+place_order:
+  pattern: checkout/submit
+  defaults: { _controller: BookshopBookshopBundle:Checkout:placeOrder}
+order_details:
+  pattern: checkout/details/{id}
+  defaults: { _controller: BookshopBookshopBundle:Checkout:orderDetails}
+  requirements:
+    _method: GET
+    id: \d+
 
 profile:
   pattern: profile/min
@@ -33,6 +105,15 @@ dashboard_index:
   pattern: dashboard/
   defaults: { _controller: BookshopBookshopBundle:Dashboard:index}
 
+dashboard_orders:
+  pattern: dashboard/orders
+  defaults: { _controller: BookshopBookshopBundle:Dashboard:ordersview}
+
+dashboard_vieworder:
+  pattern: dashboard/vieworder/
+  defaults: { _controller: BookshopBookshopBundle:Dashboard:vieworder}
+  requirements:
+      _method: POST
 
 dashboard_billing_address_show:
   pattern: dashboard/billingAddress
