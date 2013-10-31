@@ -10,5 +10,8 @@ function loadCart(url){
     
     
 }
+function loadMessages(url){
+    $('#messages').load(url);
+}
 
 

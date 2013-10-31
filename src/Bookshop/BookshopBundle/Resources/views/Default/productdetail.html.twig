@@ -22,24 +22,13 @@
 
 
 
-{% for flashMessage in app.session.flashbag.get('success') %}
-    <ul class="messages">
-        <li class="success-msg">
-            <ul>
-                <div>{{ flashMessage }}</div>
-            </ul>
-        </li>
-    </ul>
-{% endfor %}
-{% for flashMessage1 in app.session.flashbag.get('error') %}
-    <ul class="messages">
-        <li class="error-msg">
-            <ul>
-                <div>{{ flashMessage1 }}</div>
-            </ul>
-        </li>
-    </ul>
-{% endfor %}
+        <div id="messages">
+                <script>
+                $(document).ready(function() {
+                    loadMessages('{{ path('load_messages') }}');
+                });
+                </script>
+        </div>
         <div class="col-main">
             <div class="product-view">
                 <div class="product-essential">

@@ -25,4 +25,9 @@ class DefaultController extends Controller
             )
         );
     }
+    
+    public function messagesAction()
+    {
+        return $this->render('BookshopBookshopBundle:Default:messages.html.twig');
+    }
 }

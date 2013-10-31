@@ -9,6 +9,10 @@ bookshop_bookhop_set_locale:
     _method:  GET
     locale:   en|ro
     
+load_messages:
+  pattern: /messages
+  defaults: { _controller: BookshopBookshopBundle:Default:messages }
+    
 category:
   pattern: category/{id}
   defaults: { _controller: BookshopBookshopBundle:Category:show}

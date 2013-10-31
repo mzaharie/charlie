@@ -1,7 +1,15 @@
 {% extends "BookshopBookshopBundle::layout.html.twig"  %}
 {% block body %}
 <div class="col-wrapper">
+    <div id="messages">
+            <script>
+            $(document).ready(function() {
+                loadMessages('{{ path('load_messages') }}');
+            });
+            </script>
+    </div>
     <div class="col-main">
+        
         <div class="box best-selling">
 
             <h3>Latest Products</h3>
