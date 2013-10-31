@@ -25,7 +25,7 @@
                         <img src="{%if items[i].productId.image!=null%}{{asset([items[i].productId.image.path,items[i].productId.image.filename]|join)}}{%endif%}" width="50" height="50" alt="Ottoman" />
                     </a>
                     <div class="product-details">
-                        <a href="{{path('deleteproduct',{'id':items[i].id,'cartid':cart.id})}}" title="Remove This Item" class="btn-remove">Remove This Item</a>
+                        <a href="#" onclick="deleteFromCart('{{path('deleteproduct',{'id':items[i].id,'cartid':cart.id})}}','{{path('load_messages')}}','{{path('cart')}}')" title="Remove This Item" class="btn-remove">Remove This Item</a>
                         <a href="{{path('mycart')}}" title="Edit item" class="btn-edit">Edit item</a>
                         <p class="product-name"><a href="{{path('product',{'id':items[i].productId.id})}}">{{items[i].title}}</a></p>
                         <strong>{{items[i].quantity}}</strong> x

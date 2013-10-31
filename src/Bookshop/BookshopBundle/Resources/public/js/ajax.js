@@ -13,5 +13,11 @@ function loadCart(url){
 function loadMessages(url){
     $('#messages').load(url);
 }
+function deleteFromCart(url,msg_path,cart_path){
+    $.ajax(url).done(function() {
+        loadMessages(msg_path);
+        loadCart(cart_path);
+    });
+}
 
 
