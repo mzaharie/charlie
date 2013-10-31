@@ -240,13 +240,7 @@
                                                                           </div>
                     {%if product.stock>0%}
                                                                           <div class="actions">
-                                                                              <form action="{{path('addproduct')}}" method="post">
-                                                                                  <input type="hidden" name="quantity" value="1">
-                                                                                  <input type="hidden" name="productid" value="{{product.id}}">
-                                                                                  <button type="submit" title="Add to Cart" class="button btn-cart" >
-                                                                                      <span><span>Add to Cart</span></span>
-                                                                                  </button>
-                                                                              </form>
+                                                                              <button title="Add to Cart" class="button btn-cart" onclick="add('{{path('addproduct')}}',1,{{product.id}},'{{path('load_messages')}}','{{path('cart')}}')"><span><span>Add to Cart</span></span></button>
                                                                           </div>
                     {% else %}
                                                                           <div class="actions">
@@ -276,13 +270,7 @@
 
                    {%if product.stock>0%}
                                                                           <div class="actions">
-                                                                              <form action="{{path('addproduct')}}" method="post">
-                                                                                  <input type="hidden" name="quantity" value="1">
-                                                                                  <input type="hidden" name="productid" value="{{product.id}}">
-                                                                                  <button type="submit" title="Add to Cart" class="button btn-cart" >
-                                                                                      <span><span>Add to Cart</span></span>
-                                                                                  </button>
-                                                                              </form>
+                                                                              <button title="Add to Cart" class="button btn-cart" onclick="add('{{path('addproduct')}}',1,{{product.id}},'{{path('load_messages')}}','{{path('cart')}}')"><span><span>Add to Cart</span></span></button>
                                                                           </div>
                     {% else %}
                                                                           <div class="actions">
@@ -310,13 +298,7 @@
                                                                           </div>
                     {%if product.stock>0%}
                                                                           <div class="actions">
-                                                                              <form action="{{path('addproduct')}}" method="post">
-                                                                                  <input type="hidden" name="quantity" value="1">
-                                                                                  <input type="hidden" name="productid" value="{{product.id}}">
-                                                                                  <button type="submit" title="Add to Cart" class="button btn-cart" >
-                                                                                      <span><span>Add to Cart</span></span>
-                                                                                  </button>
-                                                                              </form>
+                                                                              <button title="Add to Cart" class="button btn-cart" onclick="add('{{path('addproduct')}}',1,{{product.id}},'{{path('load_messages')}}','{{path('cart')}}')"><span><span>Add to Cart</span></span></button>
                                                                           </div>
                     {% else %}
                                                                           <div class="actions">
