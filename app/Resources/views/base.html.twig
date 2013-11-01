@@ -21,10 +21,19 @@
                     <div class="header">
                         <div class="quick-access">
                             {{ locale_switcher() }}
+                                <script>
+                                    $(document).ready(function(){
+                                        $('#search').keyup(function(){
+                                            var keyword = $(this).val();
+                                            //search('{{path('search')}}',keyword);
+                                            $('#search_mini_form').submit();
+                                        });
+                                    });
+                                </script>
                                 <form id="search_mini_form" action="{{path('search')}}" method="get">
                                     <div class="form-search">
                                         <label for="search">Search:</label>
-                                        <input id="search" type="text" name="q" value="" class="input-text" maxlength="128" />
+                                        <input id="search" type="text" name="q" value="{% if 'q' in app.request.query.all|keys %}{{app.request.query.all['q']}}{% endif %}" class="input-text" maxlength="128" />
                                         <button type="submit" title="Search" class="button"><span><span>Search</span></span></button>
                                     </div>
                                 </form>

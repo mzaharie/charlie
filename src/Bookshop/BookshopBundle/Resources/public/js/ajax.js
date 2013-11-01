@@ -32,4 +32,16 @@ function add(url, qty, prodId, msgs_url, cart_url) {
     });
 }
 
+//function search(url,keyword){
+////    alert(url+'?&'+keyword);
+//    $.ajax({
+//        type: "GET",
+//        url: url,
+//        data: {q : keyword}
+//    }).done(function(data, textStatus, jqXHR){
+//        alert(data+" "+textStatus);
+//    });
+//}
+
+
 
