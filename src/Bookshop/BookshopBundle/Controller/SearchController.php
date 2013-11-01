@@ -4,6 +4,7 @@ namespace Bookshop\BookshopBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SearchController extends Controller {
 
@@ -23,6 +24,34 @@ class SearchController extends Controller {
                     'string' => $request->get('q'),
                     'categories' => $categs
         ));
+    }
+    
+    public function searchHintsAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $hints = $em->getRepository('BookshopBookshopBundle:Product')->searchHints($request);
+        $keys = array();
+        foreach ($hints as $hint){
+            $words = explode(" ", $hint->getTitle());
+            foreach ($words as $word){
+                if(!in_array($word, $keys) && strstr($word,$request->get('q'))){
+                    array_push($keys, $word);
+                }
+            }
+        }
+        $response = '';
+        if(!$hints){
+            $response = '';
+        }
+        else{
+            $response .= "<ul>";
+            $response .= "<li></li>";
+            foreach ($keys as $key){
+                    $response .= "<li>".$key."</li>";
+            }
+            $response .= "</ul>";
+        }
+        return new Response($response);
     }
 
 }

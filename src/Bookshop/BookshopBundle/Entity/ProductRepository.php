@@ -77,6 +77,22 @@ class ProductRepository extends EntityRepository {
         return $em->createQuery($qb);
         
     }
+    
+    public function searchHints($request)
+    {
+        $key = '';
+        
+        if(strlen($request->get('q'))>0){
+            $key = $request->get('q');
+            $key = '%'.$key.'%';
+        }
+        
+        $qb = $this->createQueryBuilder('p')
+                ->select('p')->where("p.title like :key")
+                ->setParameter('key', $key);
+
+        return $qb->getQuery()->getResult();
+    }
 
     private function createSqlFilter($request) {
         

@@ -1,4 +1,5 @@
 function loadCart(url) {
+    $('#cart').empty();
     var img = $('<img />');
     img.attr('id', 'cart-loading');
     img.attr('src', '/bundles/bookshopbookshop/css/images/cartLoading.gif');
@@ -29,6 +30,21 @@ function add(url, qty, prodId, msgs_url, cart_url) {
             .done(function() {
         loadMessages(msgs_url);
         loadCart(cart_url);
+    });
+}
+
+function search(url) {
+    $('#search').keyup(function() {
+        var keyword = $(this).val();
+        $('.search-autocomplete').empty();
+        $('.search-autocomplete').load(url+keyword, function() {
+            $('.search-autocomplete ul li').click(function() {
+                $('#search').val($(this).text());
+                $('#search_mini_form').submit();
+            });
+        });
+
+
     });
 }
 

@@ -23,11 +23,7 @@
                             {{ locale_switcher() }}
                                 <script>
                                     $(document).ready(function(){
-                                        $('#search').keyup(function(){
-                                            var keyword = $(this).val();
-                                            //search('{{path('search')}}',keyword);
-                                            $('#search_mini_form').submit();
-                                        });
+                                        search('{{path('search_hints')}}'+'?q=');
                                     });
                                 </script>
                                 <form id="search_mini_form" action="{{path('search')}}" method="get">
@@ -35,9 +31,11 @@
                                         <label for="search">Search:</label>
                                         <input id="search" type="text" name="q" value="{% if 'q' in app.request.query.all|keys %}{{app.request.query.all['q']}}{% endif %}" class="input-text" maxlength="128" />
                                         <button type="submit" title="Search" class="button"><span><span>Search</span></span></button>
+                                        <div class="search-autocomplete">
+                                        </div>
                                     </div>
                                 </form>
-
+                                
                                 <p class="welcome-msg">Hello <strong>{{ app.user ? app.user.firstname: 'Anonymous' }}</strong></p>
                             {{ knp_menu_render('BookshopBookshopBundle:Builder:linksMenu', {'template': 'BookshopBookshopBundle:Menu:links_menu.html.twig'}) }}
                             </div>

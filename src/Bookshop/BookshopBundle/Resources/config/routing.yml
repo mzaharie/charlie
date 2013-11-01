@@ -30,6 +30,11 @@ search:
   defaults: { _controller: BookshopBookshopBundle:Search:search}
   requirements:
     _method: GET
+search_hints:
+  pattern: search/hints
+  defaults: { _controller: BookshopBookshopBundle:Search:searchHints}
+  requirements:
+    _method: GET
 
 mycart:
   pattern: mycart
