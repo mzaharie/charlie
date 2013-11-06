@@ -43,7 +43,11 @@ class CheckoutController extends Controller
         if (!$this->getUser()) {
             $this->setFlashMessage('error', 'checkout.error.please_login');
             $url = $this->getRequest()->headers->get("referer");
-            return new RedirectResponse($url);
+            if(strlen($url)==0){
+                return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+            }else{
+                return new RedirectResponse($url);
+            }
         }
         $user = $this->getUser();
         $userid = $this->getUser()->getID();
@@ -96,7 +100,11 @@ class CheckoutController extends Controller
         if (!$this->getUser()) {
             $this->setFlashMessage('error', 'checkout.error.please_login');
             $url = $this->getRequest()->headers->get("referer");
-            return new RedirectResponse($url);
+            if(strlen($url)==0){
+                return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+            }else{
+                return new RedirectResponse($url);
+            }
         }
         $step = $this->dispatchToStep();
         if($step != false && $step != 'shipping' && $step != 'shipping_method' && $step != 'payment' && $step != 'review'){
@@ -134,7 +142,11 @@ class CheckoutController extends Controller
         if (!$this->getUser()) {
             $this->setFlashMessage('error', 'checkout.error.please_login');
             $url = $this->getRequest()->headers->get("referer");
-            return new RedirectResponse($url);
+            if(strlen($url)==0){
+                return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+            }else{
+                return new RedirectResponse($url);
+            }
         }
         $step = $this->dispatchToStep();
         if($step != false && $step != 'shipping_method' && $step != 'payment' && $step != 'review'){
@@ -174,10 +186,14 @@ class CheckoutController extends Controller
 
     public function paymentAction()
     {
-        if (!$this->getUser()) {
+       if (!$this->getUser()) {
             $this->setFlashMessage('error', 'checkout.error.please_login');
             $url = $this->getRequest()->headers->get("referer");
-            return new RedirectResponse($url);
+            if(strlen($url)==0){
+                return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+            }else{
+                return new RedirectResponse($url);
+            }
         }
         $step = $this->dispatchToStep();
         if($step != false && $step != 'payment' && $step != 'review'){
@@ -209,7 +225,11 @@ class CheckoutController extends Controller
         if (!$this->getUser()) {
             $this->setFlashMessage('error', 'checkout.error.please_login');
             $url = $this->getRequest()->headers->get("referer");
-            return new RedirectResponse($url);
+            if(strlen($url)==0){
+                return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+            }else{
+                return new RedirectResponse($url);
+            }
         }
         $user = $this->getUser();
 
@@ -224,7 +244,11 @@ class CheckoutController extends Controller
         if (!$this->getUser()) {
             $this->setFlashMessage('error', 'checkout.error.please_login');
             $url = $this->getRequest()->headers->get("referer");
-            return new RedirectResponse($url);
+            if(strlen($url)==0){
+                return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+            }else{
+                return new RedirectResponse($url);
+            }
         }
         $user = $this->getUser();
 
@@ -255,7 +279,11 @@ class CheckoutController extends Controller
         if (!$this->getUser()) {
             $this->setFlashMessage('error', 'checkout.error.please_login');
             $url = $this->getRequest()->headers->get("referer");
-            return new RedirectResponse($url);
+            if(strlen($url)==0){
+                return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+            }else{
+                return new RedirectResponse($url);
+            }
         }
         $id = null;
         if ($request->getMethod() == 'POST') {
@@ -306,10 +334,14 @@ class CheckoutController extends Controller
     public function placeOrderAction()
     {
         if (!$this->getUser()) {
-               $this->setFlashMessage('error', 'checkout.error.please_login');
-               $url = $this->getRequest()->headers->get("referer");
-               return new RedirectResponse($url);
-           }
+            $this->setFlashMessage('error', 'checkout.error.please_login');
+            $url = $this->getRequest()->headers->get("referer");
+            if(strlen($url)==0){
+                return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+            }else{
+                return new RedirectResponse($url);
+            }
+        }
         $user = $this->getUser();
 
         $em = $this->getDoctrine()->getManager();
@@ -340,7 +372,12 @@ class CheckoutController extends Controller
     {
         if (!$this->getUser()) {
             $this->setFlashMessage('error', 'checkout.error.please_login');
-            return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+            $url = $this->getRequest()->headers->get("referer");
+            if(strlen($url)==0){
+                return $this->redirect($this->generateUrl('bookshop_bookshop_homepage'));
+            }else{
+                return new RedirectResponse($url);
+            }
         }
         $user = $this->getUser();
 
